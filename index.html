@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Pastefy Control Panel · API Manager</title>
+    <title>Pastefy Pro · API Control Studio</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,18 +12,18 @@
         }
 
         body {
-            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f7 100%);
+            background: radial-gradient(circle at 10% 20%, #f4f9fe, #e9f0f5);
             font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
             padding: 2rem 1.5rem;
-            color: #1a2634;
+            color: #0a1c2a;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
-        /* header & key area */
+        /* glass header */
         .header {
             display: flex;
             flex-wrap: wrap;
@@ -31,51 +31,52 @@
             align-items: center;
             gap: 1rem;
             margin-bottom: 2rem;
-            background: white;
-            padding: 1rem 2rem;
-            border-radius: 2rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
-            backdrop-filter: blur(2px);
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(12px);
+            padding: 0.9rem 2rem;
+            border-radius: 3rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255,255,255,0.6);
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1F3B4C, #2C5F7A);
+            background: linear-gradient(130deg, #1f4e6e, #2b6c8f);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.4px;
         }
 
         .badge {
-            background: #eef2ff;
-            padding: 0.4rem 1rem;
+            background: #d9eaf3;
+            padding: 0.3rem 1rem;
             border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #1e4a6e;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #155e7e;
         }
 
         .api-section {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.6rem;
             align-items: center;
-            background: #ffffffcc;
-            backdrop-filter: blur(8px);
-            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.8);
+            padding: 0.4rem 1rem 0.4rem 1.2rem;
             border-radius: 60px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .api-key-input {
-            border: 1px solid #cbd5e1;
+            border: 1px solid #cbdbe0;
             border-radius: 60px;
             padding: 0.6rem 1.2rem;
-            font-family: monospace;
-            font-size: 0.85rem;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.8rem;
             width: 280px;
-            background: #fefefe;
+            background: white;
             transition: 0.2s;
         }
 
@@ -90,34 +91,37 @@
             border: none;
             color: white;
             font-weight: 600;
-            padding: 0.6rem 1.2rem;
+            padding: 0.55rem 1.3rem;
             border-radius: 40px;
             cursor: pointer;
             font-size: 0.85rem;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         button:hover {
-            background: #0f3b54;
+            background: #0e3a52;
             transform: translateY(-1px);
+            box-shadow: 0 6px 12px -8px rgba(0,0,0,0.2);
         }
 
         button.secondary {
-            background: #e2e8f0;
-            color: #1e293b;
-            border: 1px solid #cbd5e1;
+            background: #eef2f8;
+            color: #1f4e6e;
+            border: 1px solid #cbdbe6;
+            box-shadow: none;
         }
 
         button.secondary:hover {
-            background: #cbd5e1;
+            background: #e2e8f2;
+            transform: translateY(-1px);
         }
 
         button.danger {
-            background: #b91c1c;
+            background: #c2412c;
         }
         button.danger:hover {
-            background: #991b1b;
+            background: #9b2e1c;
         }
 
         .grid-2col {
@@ -128,114 +132,124 @@
         }
 
         .card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0,0,0,0.02);
-            transition: all 0.2s;
-            border: 1px solid #eef2f6;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(2px);
+            border-radius: 1.8rem;
+            padding: 1.6rem;
+            box-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eef2fa;
+            transition: 0.2s;
         }
 
         .card h2 {
-            font-size: 1.4rem;
+            font-size: 1.45rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
             border-left: 4px solid #2c7da0;
-            padding-left: 0.75rem;
+            padding-left: 0.9rem;
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.1rem;
         }
 
         label {
-            font-weight: 500;
+            font-weight: 550;
             display: block;
             margin-bottom: 0.4rem;
-            font-size: 0.85rem;
-            color: #2c3e50;
+            font-size: 0.8rem;
+            color: #1e3a4d;
+            letter-spacing: -0.2px;
         }
 
         input, textarea, select {
             width: 100%;
             padding: 0.7rem 1rem;
-            border-radius: 1rem;
-            border: 1px solid #cfdee9;
+            border-radius: 1.2rem;
+            border: 1px solid #dce5ed;
             font-family: inherit;
-            background: #fafcff;
+            background: #ffffff;
+            transition: 0.1s;
         }
 
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 110px;
         }
 
         .paste-list {
-            margin-top: 1.5rem;
-            max-height: 380px;
+            margin-top: 1.2rem;
+            max-height: 440px;
             overflow-y: auto;
+            padding-right: 0.2rem;
         }
 
         .paste-item {
-            background: #f8fafc;
-            border-radius: 1rem;
-            padding: 0.8rem;
-            margin-bottom: 0.7rem;
+            background: #fbfdff;
+            border-radius: 1.2rem;
+            padding: 0.9rem;
+            margin-bottom: 0.85rem;
             border-left: 3px solid #2c7da0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
             transition: 0.1s;
         }
 
         .paste-title {
             font-weight: 700;
             word-break: break-word;
+            font-size: 0.95rem;
         }
 
         .paste-meta {
             font-size: 0.7rem;
-            color: #5b6e8c;
+            color: #4f6f8f;
             display: flex;
             gap: 1rem;
-            margin-top: 0.3rem;
+            margin-top: 0.4rem;
             flex-wrap: wrap;
         }
 
         .actions {
-            margin-top: 0.6rem;
+            margin-top: 0.7rem;
             display: flex;
             gap: 0.6rem;
             flex-wrap: wrap;
         }
 
         .btn-sm {
-            padding: 0.25rem 0.8rem;
+            padding: 0.25rem 0.9rem;
             font-size: 0.7rem;
+            font-weight: 500;
         }
 
         .status {
-            background: #f1f5f9;
-            border-radius: 2rem;
-            padding: 0.5rem 1rem;
+            background: #f0f4fa;
+            border-radius: 1.8rem;
+            padding: 0.6rem 1rem;
             font-size: 0.8rem;
             margin-top: 1rem;
             font-family: monospace;
+            word-break: break-word;
         }
 
         .error-status {
             color: #b91c1c;
-            background: #fee2e2;
+            background: #ffe8e8;
+            border-left: 3px solid #c2412c;
         }
 
         .success-status {
-            color: #166534;
-            background: #dcfce7;
+            color: #0a5c2e;
+            background: #e3f7ec;
+            border-left: 3px solid #2b8c4a;
         }
 
         hr {
             margin: 1rem 0;
-            border-color: #e9edf2;
+            border-color: #e2edf5;
         }
 
         @media (max-width: 780px) {
@@ -249,12 +263,26 @@
                 width: 100%;
             }
         }
+
         .star-badge {
             font-size: 0.7rem;
-            background: #fde04720;
-            padding: 0.2rem 0.5rem;
+            background: #fef3c7;
+            padding: 0.2rem 0.6rem;
             border-radius: 30px;
-            display: inline-block;
+            font-weight: 500;
+            color: #b45309;
+        }
+
+        .pill-id {
+            font-size: 0.65rem;
+            background: #eef2ff;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-family: monospace;
+        }
+
+        button:active {
+            transform: translateY(1px);
         }
     </style>
 </head>
@@ -262,85 +290,85 @@
 <div class="container">
     <div class="header">
         <div style="display: flex; align-items: center; gap: 12px;">
-            <h1>📋 Pastefy Controller</h1>
-            <div class="badge">API v2 · realtime control</div>
+            <h1>⚡ Pastefy Control Hub</h1>
+            <div class="badge">API v2 · Full CRUD + Stars</div>
         </div>
         <div class="api-section">
-            <input type="text" id="apiKeyInput" class="api-key-input" placeholder="Paste your API key" value="BuAyZNqRw61RPkZtpfsrx8CBmkhZHOwHN3zn37nIIm4xlxEkH3xvc59kVFIV">
-            <button id="saveKeyBtn">🔑 Set & Load</button>
+            <input type="text" id="apiKeyInput" class="api-key-input" placeholder="Pastefy API key" value="BuAyZNqRw61RPkZtpfsrx8CBmkhZHOwHN3zn37nIIm4xlxEkH3xvc59kVFIV">
+            <button id="saveKeyBtn">🔑 Activate Key</button>
         </div>
     </div>
 
     <div class="grid-2col">
-        <!-- left panel: create / edit / delete -->
+        <!-- LEFT: Create / Edit / Delete Master -->
         <div class="card">
-            <h2>✍️ Create / Edit Paste</h2>
+            <h2>✏️ Paste Composer</h2>
             <div class="form-group">
-                <label>Paste ID (for edit/delete, leave blank for create)</label>
-                <input type="text" id="pasteIdField" placeholder="Leave empty to create new paste">
+                <label>🔗 Paste ID (for edit/delete — blank = new paste)</label>
+                <input type="text" id="pasteIdField" placeholder="e.g., abc123... leave empty to create">
             </div>
             <div class="form-group">
-                <label>Title</label>
-                <input type="text" id="pasteTitle" placeholder="My awesome snippet">
+                <label>📌 Title</label>
+                <input type="text" id="pasteTitle" placeholder="Awesome code snippet / notes">
             </div>
             <div class="form-group">
-                <label>Content *</label>
-                <textarea id="pasteContent" placeholder="Paste your text, code, notes ..."></textarea>
+                <label>📝 Content *</label>
+                <textarea id="pasteContent" placeholder="Write your paste content here (Markdown, code, text)"></textarea>
             </div>
             <div class="form-group">
-                <label>Visibility (optional, default: unlisted)</label>
+                <label>👁️ Visibility</label>
                 <select id="pasteVisibility">
-                    <option value="unlisted">Unlisted</option>
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
+                    <option value="unlisted">Unlisted (link only)</option>
+                    <option value="public">Public 🌍</option>
+                    <option value="private">Private 🔒</option>
                 </select>
             </div>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                <button id="createPasteBtn">✨ Create Paste</button>
-                <button id="updatePasteBtn" class="secondary">✏️ Update Selected</button>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 0.2rem;">
+                <button id="createPasteBtn">✨ Create New</button>
+                <button id="updatePasteBtn" class="secondary">🔄 Update Selected</button>
                 <button id="deletePasteBtn" class="danger">🗑️ Delete Selected</button>
             </div>
-            <div id="actionStatus" class="status">💡 Ready — actions will appear here</div>
+            <div id="actionStatus" class="status">💡 Ready — API actions will show feedback here</div>
         </div>
 
-        <!-- right panel: list & star management -->
+        <!-- RIGHT: Lists & Stars Management -->
         <div class="card">
-            <h2>📚 Your Pastes & Star Controls</h2>
-            <div style="display: flex; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                <button id="fetchPastesBtn">🔄 Refresh My Pastes</button>
-                <button id="fetchStarredBtn" class="secondary">⭐ Show Starred Pastes</button>
-                <button id="fetchPublicBtn" class="secondary">🌍 Trending Public</button>
+            <h2>📚 Pastes & Interactions</h2>
+            <div style="display: flex; gap: 0.6rem; margin-bottom: 1.2rem; flex-wrap: wrap;">
+                <button id="fetchPastesBtn">🔄 My Pastes</button>
+                <button id="fetchStarredBtn" class="secondary">⭐ Starred by me</button>
+                <button id="fetchPublicBtn" class="secondary">🔥 Trending public</button>
             </div>
             <div id="pastesListContainer" class="paste-list">
-                <div class="status" style="text-align: center;">Click refresh to load your pastes</div>
+                <div class="status" style="text-align: center;">⚙️ Use buttons above to load pastes</div>
             </div>
         </div>
     </div>
 
-    <!-- user info & extra -->
-    <div class="card" style="margin-top: 0rem;">
-        <h2>👤 Account Snapshot</h2>
+    <!-- account insights -->
+    <div class="card" style="margin-top: 0;">
+        <h2>👤 Account Intelligence</h2>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-            <button id="fetchUserBtn">📇 Get My Profile</button>
-            <button id="fetchOverviewBtn" class="secondary">📊 User Overview (stats)</button>
+            <button id="fetchUserBtn">📇 Profile</button>
+            <button id="fetchOverviewBtn" class="secondary">📊 Detailed Stats</button>
         </div>
-        <div id="userInfoArea" class="status" style="margin-top: 1rem; white-space: pre-wrap;">No user data loaded</div>
+        <div id="userInfoArea" class="status" style="margin-top: 1rem; white-space: pre-wrap;">🔐 Click profile to load user data</div>
     </div>
 </div>
 
 <script>
-    // ---------- CONFIG ----------
+    // ---------- CORE CONFIG ----------
     const BASE_URL = 'https://pastefy.app/api/v2';
     let currentApiKey = localStorage.getItem('pastefy_api_key') || 'BuAyZNqRw61RPkZtpfsrx8CBmkhZHOwHN3zn37nIIm4xlxEkH3xvc59kVFIV';
     document.getElementById('apiKeyInput').value = currentApiKey;
 
-    // Helper: get auth headers
+    // Helper headers
     function authHeaders() {
         if (!currentApiKey) return {};
         return { 'Authorization': `Bearer ${currentApiKey}` };
     }
 
-    // Generic fetch with error handling
+    // robust fetch
     async function apiRequest(endpoint, options = {}) {
         const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
         const headers = {
@@ -356,29 +384,29 @@
                 data = await response.json();
             } else if (!response.ok) {
                 const text = await response.text();
-                throw new Error(`HTTP ${response.status}: ${text.substring(0, 100)}`);
+                throw new Error(`HTTP ${response.status}: ${text.slice(0, 120)}`);
             }
             if (!response.ok) {
-                const errMsg = data?.message || data?.error || `Request failed (${response.status})`;
+                const errMsg = data?.message || data?.error || `Request error (${response.status})`;
                 throw new Error(errMsg);
             }
             return { data, status: response.status, ok: true };
         } catch (err) {
-            console.error('API error:', err);
+            console.warn('[API]', err);
             return { ok: false, error: err.message };
         }
     }
 
-    // update status display (action feedback)
+    // UI feedback
     function setActionStatus(msg, isError = false) {
         const statusDiv = document.getElementById('actionStatus');
         statusDiv.innerText = msg;
         statusDiv.className = `status ${isError ? 'error-status' : 'success-status'}`;
         setTimeout(() => {
-            if (document.getElementById('actionStatus') === statusDiv) {
+            if (document.getElementById('actionStatus') === statusDiv && !isError) {
                 statusDiv.className = 'status';
             }
-        }, 4000);
+        }, 4200);
     }
 
     function setUserInfo(text, isError = false) {
@@ -387,84 +415,88 @@
         area.className = `status ${isError ? 'error-status' : 'success-status'}`;
     }
 
-    // ---- Render pastes list with star & delete/edit actions ----
-    function renderPastesList(pastes, isStarredView = false) {
+    // ---------- RENDER engine with star/unstar, edit, delete, raw ----------
+    function renderPastesList(pastes, isStarredContext = false) {
         const container = document.getElementById('pastesListContainer');
         if (!pastes || pastes.length === 0) {
-            container.innerHTML = '<div class="status">✨ No pastes found. Create one!</div>';
+            container.innerHTML = '<div class="status">✨ No pastes found. Create your first paste!</div>';
             return;
         }
         container.innerHTML = '';
         pastes.forEach(paste => {
             const pasteId = paste.id || paste._id;
-            const title = paste.title || 'Untitled paste';
-            const contentPreview = paste.content ? (paste.content.length > 80 ? paste.content.substring(0, 80) + '…' : paste.content) : '(empty)';
-            const createdAt = paste.created_at ? new Date(paste.created_at).toLocaleString() : 'unknown';
+            if (!pasteId) return;
+            const title = paste.title || '📄 Untitled';
+            const contentRaw = paste.content || '';
+            const contentPreview = contentRaw.length > 100 ? contentRaw.substring(0, 100) + '…' : (contentRaw || '(empty)');
+            const createdAt = paste.created_at ? new Date(paste.created_at).toLocaleString() : 'unknown date';
             const visibility = paste.visibility || '—';
             const starCount = paste.stars ?? (paste.star_count ?? 0);
-            const isStarredByMe = paste.starred || false;
+            const isStarredByMe = paste.starred === true;
 
             const div = document.createElement('div');
             div.className = 'paste-item';
             div.innerHTML = `
-                <div class="paste-title">📄 ${escapeHtml(title)} <span style="font-size:0.7rem; background:#eef2ff; padding:2px 8px; border-radius:20px;">${escapeHtml(pasteId)}</span></div>
+                <div class="paste-title">
+                    📄 ${escapeHtml(title)} <span class="pill-id">${escapeHtml(pasteId.slice(0, 12))}…</span>
+                </div>
                 <div class="paste-meta">
                     <span>📅 ${escapeHtml(createdAt)}</span>
                     <span>🔒 ${escapeHtml(visibility)}</span>
-                    <span>⭐ ${starCount} stars</span>
+                    <span>⭐ ${starCount}</span>
                     ${isStarredByMe ? '<span class="star-badge">★ starred by you</span>' : ''}
                 </div>
-                <div class="paste-meta">📝 ${escapeHtml(contentPreview)}</div>
+                <div class="paste-meta">✏️ ${escapeHtml(contentPreview)}</div>
                 <div class="actions">
-                    <button class="btn-sm edit-paste-btn" data-id="${escapeHtml(pasteId)}" data-title="${escapeHtml(title)}" data-content="${escapeHtml(paste.content || '')}" data-vis="${escapeHtml(visibility)}">✏️ Edit</button>
-                    <button class="btn-sm danger delete-quick-btn" data-id="${escapeHtml(pasteId)}">🗑️ Delete</button>
-                    ${!isStarredView ? `<button class="btn-sm star-toggle-btn" data-id="${escapeHtml(pasteId)}" data-starred="${isStarredByMe}">${isStarredByMe ? '★ Unstar' : '☆ Star'}</button>` : `<button class="btn-sm star-toggle-btn" data-id="${escapeHtml(pasteId)}" data-starred="true">★ Unstar</button>`}
-                    <button class="btn-sm view-raw-btn" data-id="${escapeHtml(pasteId)}">📄 Raw</button>
+                    <button class="btn-sm edit-paste" data-id="${escapeHtml(pasteId)}" data-title="${escapeHtml(title)}" data-content="${escapeHtml(contentRaw)}" data-vis="${escapeHtml(visibility)}">✏️ Edit</button>
+                    <button class="btn-sm danger delete-paste" data-id="${escapeHtml(pasteId)}">🗑️ Del</button>
+                    <button class="btn-sm star-act" data-id="${escapeHtml(pasteId)}" data-starred="${isStarredByMe}">${isStarredByMe ? '★ Unstar' : '☆ Star'}</button>
+                    <button class="btn-sm raw-view" data-id="${escapeHtml(pasteId)}">📄 Raw</button>
                 </div>
             `;
             container.appendChild(div);
         });
 
-        // attach dynamic events
-        document.querySelectorAll('.edit-paste-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+        // attach events
+        document.querySelectorAll('.edit-paste').forEach(btn => {
+            btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-id');
-                const title = btn.getAttribute('data-title');
-                const content = btn.getAttribute('data-content');
-                const vis = btn.getAttribute('data-vis');
+                const t = btn.getAttribute('data-title');
+                const c = btn.getAttribute('data-content');
+                const v = btn.getAttribute('data-vis');
                 document.getElementById('pasteIdField').value = id;
-                document.getElementById('pasteTitle').value = title;
-                document.getElementById('pasteContent').value = content;
-                document.getElementById('pasteVisibility').value = vis;
-                setActionStatus(`Loaded paste "${id}" for editing`, false);
+                document.getElementById('pasteTitle').value = t;
+                document.getElementById('pasteContent').value = c;
+                document.getElementById('pasteVisibility').value = v;
+                setActionStatus(`✏️ Loaded paste "${id}" ready for update`, false);
             });
         });
 
-        document.querySelectorAll('.delete-quick-btn').forEach(btn => {
+        document.querySelectorAll('.delete-paste').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const id = btn.getAttribute('data-id');
-                if (confirm(`Delete paste "${id}" permanently?`)) {
-                    await deletePasteById(id);
-                    await fetchMyPastes();  // refresh list
+                if (confirm(`⚠️ Permanently delete paste "${id}"?`)) {
+                    const ok = await deletePasteById(id);
+                    if (ok) await fetchMyPastes();
                 }
             });
         });
 
-        document.querySelectorAll('.star-toggle-btn').forEach(btn => {
+        document.querySelectorAll('.star-act').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const id = btn.getAttribute('data-id');
-                const currentlyStarred = btn.getAttribute('data-starred') === 'true';
-                if (currentlyStarred) {
+                const currently = btn.getAttribute('data-starred') === 'true';
+                if (currently) {
                     await unstarPaste(id);
                 } else {
                     await starPaste(id);
                 }
-                await fetchMyPastes();    // refresh list
+                await fetchMyPastes();
                 setActionStatus(`⭐ Star toggled on ${id}`, false);
             });
         });
 
-        document.querySelectorAll('.view-raw-btn').forEach(btn => {
+        document.querySelectorAll('.raw-view').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const id = btn.getAttribute('data-id');
                 await fetchRawPaste(id);
@@ -472,14 +504,15 @@
         });
     }
 
+    // --- API actions ---
     async function fetchRawPaste(pasteId) {
         const result = await apiRequest(`/paste/${pasteId}/raw`, { method: 'GET' });
-        if (result.ok && result.data) {
-            const rawContent = typeof result.data === 'string' ? result.data : JSON.stringify(result.data);
-            alert(`📄 RAW content for ${pasteId}:\n\n${rawContent.substring(0, 2000)}`);
-            setActionStatus(`Raw content loaded for ${pasteId}`);
+        if (result.ok && (result.data !== undefined)) {
+            const raw = typeof result.data === 'string' ? result.data : JSON.stringify(result.data, null, 2);
+            alert(`📄 RAW content [${pasteId}]:\n\n${raw.substring(0, 2800)}`);
+            setActionStatus(`✅ Raw content retrieved for ${pasteId}`);
         } else {
-            setActionStatus(`Failed to get raw: ${result.error}`, true);
+            setActionStatus(`❌ Raw fetch failed: ${result.error}`, true);
         }
     }
 
@@ -498,7 +531,7 @@
     async function deletePasteById(pasteId) {
         const result = await apiRequest(`/paste/${pasteId}`, { method: 'DELETE' });
         if (result.ok) {
-            setActionStatus(`✅ Paste ${pasteId} deleted.`);
+            setActionStatus(`🗑️ Paste ${pasteId} deleted.`, false);
             return true;
         } else {
             setActionStatus(`Delete error: ${result.error}`, true);
@@ -506,55 +539,52 @@
         }
     }
 
-    // fetch my pastes (GET /user/pastes)
     async function fetchMyPastes() {
-        if (!currentApiKey) { setActionStatus("⚠️ Set API key first", true); return; }
+        if (!currentApiKey) { setActionStatus("❌ API key missing", true); return; }
         const result = await apiRequest('/user/pastes', { method: 'GET' });
         if (result.ok && result.data) {
             let pastes = Array.isArray(result.data) ? result.data : (result.data.pastes || []);
             renderPastesList(pastes, false);
-            setActionStatus(`Loaded ${pastes.length} pastes`);
+            setActionStatus(`📋 Loaded ${pastes.length} pastes`, false);
         } else {
             renderPastesList([], false);
-            setActionStatus(`Could not load pastes: ${result.error}`, true);
+            setActionStatus(`Failed to load pastes: ${result.error}`, true);
         }
     }
 
-    // fetch starred pastes (GET /user/starred)
     async function fetchStarredPastes() {
         if (!currentApiKey) { setActionStatus("No API key", true); return; }
         const result = await apiRequest('/user/starred', { method: 'GET' });
         if (result.ok && result.data) {
             let starred = Array.isArray(result.data) ? result.data : (result.data.starred || result.data.pastes || []);
             renderPastesList(starred, true);
-            setActionStatus(`⭐ ${starred.length} starred pastes`);
+            setActionStatus(`⭐ ${starred.length} starred pastes loaded`, false);
         } else {
-            setActionStatus(`Failed starred: ${result.error}`, true);
+            setActionStatus(`Starred error: ${result.error}`, true);
         }
     }
 
-    // trending public pastes
     async function fetchTrendingPublic() {
         const result = await apiRequest('/pastes/trending', { method: 'GET' });
         if (result.ok && result.data) {
             let trending = Array.isArray(result.data) ? result.data : (result.data.pastes || []);
             renderPastesList(trending, false);
-            setActionStatus(`🌍 Trending public pastes (${trending.length})`);
+            setActionStatus(`🌍 Trending: ${trending.length} public pastes`, false);
         } else {
             setActionStatus(`Trending error: ${result.error}`, true);
         }
     }
 
-    // create new paste
     async function createPaste() {
         const title = document.getElementById('pasteTitle').value;
         const content = document.getElementById('pasteContent').value;
         const visibility = document.getElementById('pasteVisibility').value;
-        if (!content.trim()) { setActionStatus("Content cannot be empty", true); return; }
+        if (!content.trim()) { setActionStatus("❌ Paste content cannot be empty", true); return; }
         const payload = { title, content, visibility };
         const result = await apiRequest('/paste', { method: 'POST', body: JSON.stringify(payload) });
         if (result.ok && result.data) {
-            setActionStatus(`✅ Paste created! ID: ${result.data.id || 'success'}`, false);
+            const newId = result.data.id || 'created';
+            setActionStatus(`✅ Paste "${title || 'untitled'}" created! ID: ${newId}`, false);
             document.getElementById('pasteIdField').value = '';
             document.getElementById('pasteTitle').value = '';
             document.getElementById('pasteContent').value = '';
@@ -564,14 +594,13 @@
         }
     }
 
-    // update existing paste (PUT)
     async function updatePaste() {
         const pasteId = document.getElementById('pasteIdField').value.trim();
-        if (!pasteId) { setActionStatus("Please provide a Paste ID to update", true); return; }
+        if (!pasteId) { setActionStatus("⚠️ Provide a Paste ID to update", true); return; }
         const title = document.getElementById('pasteTitle').value;
         const content = document.getElementById('pasteContent').value;
         const visibility = document.getElementById('pasteVisibility').value;
-        if (!content.trim() && !title) { setActionStatus("At least content or title needed", true); return; }
+        if (!content.trim() && !title.trim()) { setActionStatus("At least content or title required", true); return; }
         const payload = { title, content, visibility };
         const result = await apiRequest(`/paste/${pasteId}`, { method: 'PUT', body: JSON.stringify(payload) });
         if (result.ok) {
@@ -584,8 +613,8 @@
 
     async function deleteSelected() {
         const pasteId = document.getElementById('pasteIdField').value.trim();
-        if (!pasteId) { setActionStatus("No Paste ID selected for deletion", true); return; }
-        if (confirm(`Delete paste ${pasteId}?`)) {
+        if (!pasteId) { setActionStatus("No paste ID selected for deletion", true); return; }
+        if (confirm(`Delete paste "${pasteId}"? This action is permanent.`)) {
             const ok = await deletePasteById(pasteId);
             if (ok) {
                 document.getElementById('pasteIdField').value = '';
@@ -594,23 +623,22 @@
         }
     }
 
-    // get current user info
     async function fetchUser() {
         const result = await apiRequest('/user', { method: 'GET' });
         if (result.ok && result.data) {
-            const user = result.data;
-            setUserInfo(`👤 Username: ${user.username || user.name || 'N/A'} | Email: ${user.email || 'private'} | ID: ${user.id || '—'} | Created: ${user.created_at ? new Date(user.created_at).toLocaleDateString() : '—'}\n📦 Additional: ${JSON.stringify(user, null, 2)}`);
+            const u = result.data;
+            setUserInfo(`👤 User: ${u.username || u.name || 'N/A'}  |  📧 ${u.email || 'private'}  |  🆔 ${u.id || '—'}\n📅 Joined: ${u.created_at ? new Date(u.created_at).toLocaleString() : 'unknown'}\n📦 Full profile: ${JSON.stringify(u, null, 2)}`);
         } else {
-            setUserInfo(`Error fetching user: ${result.error}`, true);
+            setUserInfo(`🔐 Failed: ${result.error}`, true);
         }
     }
 
     async function fetchOverview() {
         const result = await apiRequest('/user/overview', { method: 'GET' });
         if (result.ok && result.data) {
-            setUserInfo(`📊 Overview stats:\n${JSON.stringify(result.data, null, 2)}`);
+            setUserInfo(`📊 ACCOUNT OVERVIEW\n${JSON.stringify(result.data, null, 2)}`);
         } else {
-            setUserInfo(`Overview failed: ${result.error}`, true);
+            setUserInfo(`Overview error: ${result.error}`, true);
         }
     }
 
@@ -619,13 +647,15 @@
         if (newKey) {
             currentApiKey = newKey;
             localStorage.setItem('pastefy_api_key', newKey);
-            setActionStatus("API Key saved & active", false);
+            setActionStatus("🔐 API key saved and active", false);
+            fetchMyPastes().catch(()=>{});
+            fetchUser().catch(()=>{});
         } else {
             setActionStatus("Invalid API key", true);
         }
     }
 
-    // event binding
+    // ---- event binding ----
     document.getElementById('saveKeyBtn').addEventListener('click', saveApiKey);
     document.getElementById('createPasteBtn').addEventListener('click', createPaste);
     document.getElementById('updatePasteBtn').addEventListener('click', updatePaste);
@@ -636,21 +666,19 @@
     document.getElementById('fetchUserBtn').addEventListener('click', fetchUser);
     document.getElementById('fetchOverviewBtn').addEventListener('click', fetchOverview);
 
-    // initial load on start
+    // initial load with existing key
     if (currentApiKey) {
-        fetchMyPastes().catch(console.warn);
-        fetchUser().catch(console.warn);
+        fetchMyPastes().catch(e => console.warn(e));
+        fetchUser().catch(e => console.warn(e));
     }
 
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
+        return String(str).replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
 </script>
