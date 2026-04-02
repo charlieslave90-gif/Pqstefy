@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Pastefy Pro · API Control Studio</title>
+    <title>Pastebin Control Panel · API Manager</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,116 +12,114 @@
         }
 
         body {
-            background: radial-gradient(circle at 10% 20%, #f4f9fe, #e9f0f5);
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', monospace;
             padding: 2rem 1.5rem;
-            color: #0a1c2a;
+            color: #eef2ff;
         }
 
         .container {
-            max-width: 1440px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* glass header */
-        .header {
+        /* header panel */
+        .glass-panel {
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(72, 187, 255, 0.2);
+            border-radius: 2rem;
+            padding: 1.2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
+        }
+
+        .flex-row {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 2rem;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(12px);
-            padding: 0.9rem 2rem;
-            border-radius: 3rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
-            border: 1px solid rgba(255,255,255,0.6);
         }
 
         h1 {
             font-size: 1.9rem;
             font-weight: 700;
-            background: linear-gradient(130deg, #1f4e6e, #2b6c8f);
+            background: linear-gradient(120deg, #7ac7ff, #f0b3ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.4px;
+            letter-spacing: -0.5px;
         }
 
         .badge {
-            background: #d9eaf3;
+            background: #1e2a44;
             padding: 0.3rem 1rem;
             border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #155e7e;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #9ac8ff;
+            font-family: monospace;
         }
 
-        .api-section {
+        .api-key-group {
             display: flex;
+            gap: 0.75rem;
             flex-wrap: wrap;
-            gap: 0.6rem;
             align-items: center;
-            background: rgba(255,255,255,0.8);
-            padding: 0.4rem 1rem 0.4rem 1.2rem;
-            border-radius: 60px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .api-key-input {
-            border: 1px solid #cbdbe0;
+        .api-input {
+            background: #0f172f;
+            border: 1px solid #2d3a5e;
             border-radius: 60px;
-            padding: 0.6rem 1.2rem;
-            font-family: 'SF Mono', monospace;
-            font-size: 0.8rem;
-            width: 280px;
-            background: white;
-            transition: 0.2s;
+            padding: 0.7rem 1.3rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            width: 320px;
+            color: white;
         }
 
-        .api-key-input:focus {
+        .api-input:focus {
             outline: none;
-            border-color: #2c7da0;
-            box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
         }
 
         button {
-            background: #1f4e6e;
+            background: #2563eb;
             border: none;
             color: white;
             font-weight: 600;
-            padding: 0.55rem 1.3rem;
+            padding: 0.6rem 1.3rem;
             border-radius: 40px;
             cursor: pointer;
             font-size: 0.85rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
 
         button:hover {
-            background: #0e3a52;
+            background: #1d4ed8;
             transform: translateY(-1px);
-            box-shadow: 0 6px 12px -8px rgba(0,0,0,0.2);
         }
 
         button.secondary {
-            background: #eef2f8;
-            color: #1f4e6e;
-            border: 1px solid #cbdbe6;
-            box-shadow: none;
+            background: #334155;
         }
-
         button.secondary:hover {
-            background: #e2e8f2;
-            transform: translateY(-1px);
+            background: #475569;
         }
-
-        button.danger {
-            background: #c2412c;
+        button.warning {
+            background: #dc2626;
         }
-        button.danger:hover {
-            background: #9b2e1c;
+        button.warning:hover {
+            background: #b91c1c;
+        }
+        button.outline {
+            background: transparent;
+            border: 1px solid #3b82f6;
+            color: #90cdf4;
         }
 
         .grid-2col {
@@ -132,83 +130,79 @@
         }
 
         .card {
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(2px);
-            border-radius: 1.8rem;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 1.5rem;
             padding: 1.6rem;
-            box-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.08);
-            border: 1px solid #eef2fa;
-            transition: 0.2s;
+            border: 1px solid #1e2a44;
+            transition: all 0.2s;
         }
 
         .card h2 {
-            font-size: 1.45rem;
+            font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 1.2rem;
+            border-left: 4px solid #3b82f6;
+            padding-left: 0.8rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            border-left: 4px solid #2c7da0;
-            padding-left: 0.9rem;
         }
 
         .form-group {
-            margin-bottom: 1.1rem;
+            margin-bottom: 1.2rem;
         }
 
         label {
-            font-weight: 550;
-            display: block;
-            margin-bottom: 0.4rem;
+            font-weight: 500;
             font-size: 0.8rem;
-            color: #1e3a4d;
-            letter-spacing: -0.2px;
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #b9c7e0;
         }
 
         input, textarea, select {
             width: 100%;
+            background: #0a0f1c;
+            border: 1px solid #2d3a5e;
+            border-radius: 1rem;
             padding: 0.7rem 1rem;
-            border-radius: 1.2rem;
-            border: 1px solid #dce5ed;
+            color: #f1f5f9;
             font-family: inherit;
-            background: #ffffff;
-            transition: 0.1s;
         }
 
         textarea {
-            resize: vertical;
             min-height: 110px;
+            resize: vertical;
         }
 
         .paste-list {
-            margin-top: 1.2rem;
-            max-height: 440px;
+            max-height: 460px;
             overflow-y: auto;
-            padding-right: 0.2rem;
+            margin-top: 1rem;
         }
 
         .paste-item {
-            background: #fbfdff;
-            border-radius: 1.2rem;
+            background: #0f172f;
+            border-radius: 1rem;
             padding: 0.9rem;
-            margin-bottom: 0.85rem;
-            border-left: 3px solid #2c7da0;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            margin-bottom: 0.8rem;
+            border-left: 3px solid #3b82f6;
             transition: 0.1s;
         }
 
         .paste-title {
             font-weight: 700;
-            word-break: break-word;
             font-size: 0.95rem;
+            word-break: break-word;
         }
 
         .paste-meta {
             font-size: 0.7rem;
-            color: #4f6f8f;
+            color: #8ca3cf;
             display: flex;
             gap: 1rem;
-            margin-top: 0.4rem;
+            margin-top: 0.3rem;
             flex-wrap: wrap;
         }
 
@@ -220,466 +214,510 @@
         }
 
         .btn-sm {
-            padding: 0.25rem 0.9rem;
+            padding: 0.25rem 0.8rem;
             font-size: 0.7rem;
-            font-weight: 500;
+            border-radius: 30px;
         }
 
         .status {
-            background: #f0f4fa;
-            border-radius: 1.8rem;
+            background: #0f172f;
+            border-radius: 1rem;
             padding: 0.6rem 1rem;
             font-size: 0.8rem;
-            margin-top: 1rem;
             font-family: monospace;
-            word-break: break-word;
+            margin-top: 1rem;
+            border: 1px solid #1e2a44;
         }
 
         .error-status {
-            color: #b91c1c;
-            background: #ffe8e8;
-            border-left: 3px solid #c2412c;
+            color: #fca5a5;
+            background: #3b0f1a;
+            border-color: #ef4444;
         }
 
         .success-status {
-            color: #0a5c2e;
-            background: #e3f7ec;
-            border-left: 3px solid #2b8c4a;
+            color: #bef264;
+            background: #0f2a1a;
+            border-color: #4ade80;
         }
 
         hr {
-            margin: 1rem 0;
-            border-color: #e2edf5;
+            margin: 0.8rem 0;
+            border-color: #1e2a44;
         }
 
         @media (max-width: 780px) {
             .grid-2col {
                 grid-template-columns: 1fr;
             }
-            body {
-                padding: 1rem;
-            }
-            .api-key-input {
+            .api-input {
                 width: 100%;
             }
         }
 
-        .star-badge {
-            font-size: 0.7rem;
-            background: #fef3c7;
-            padding: 0.2rem 0.6rem;
-            border-radius: 30px;
-            font-weight: 500;
-            color: #b45309;
+        .raw-link {
+            cursor: pointer;
+            text-decoration: underline;
+            color: #7aaef0;
         }
-
-        .pill-id {
-            font-size: 0.65rem;
-            background: #eef2ff;
-            padding: 2px 8px;
-            border-radius: 30px;
-            font-family: monospace;
+        ::-webkit-scrollbar {
+            width: 5px;
         }
-
-        button:active {
-            transform: translateY(1px);
+        ::-webkit-scrollbar-track {
+            background: #0f172f;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <h1>⚡ Pastefy Control Hub</h1>
-            <div class="badge">API v2 · Full CRUD + Stars</div>
+    <div class="glass-panel">
+        <div class="flex-row">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <h1>📦 Pastebin Commander</h1>
+                <div class="badge">API · dev control</div>
+            </div>
+            <div class="api-key-group">
+                <input type="text" id="devKeyInput" class="api-input" placeholder="Pastebin API Developer Key" value="S9nW5ShpEL_lZp5mvCJKb-55IzEfNyKi">
+                <button id="saveDevKeyBtn">🔑 Set Key</button>
+            </div>
         </div>
-        <div class="api-section">
-            <input type="text" id="apiKeyInput" class="api-key-input" placeholder="Pastefy API key" value="BuAyZNqRw61RPkZtpfsrx8CBmkhZHOwHN3zn37nIIm4xlxEkH3xvc59kVFIV">
-            <button id="saveKeyBtn">🔑 Activate Key</button>
+        <div class="flex-row" style="margin-top: 1rem; justify-content: flex-start; gap: 1rem;">
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <span style="font-size: 0.75rem;">👤 User Session Key (optional):</span>
+                <input type="text" id="userKeyInput" class="api-input" placeholder="api_user_key (login via member)" style="width: 260px;">
+                <button id="loginViaFormBtn" class="secondary btn-sm">🔐 Get user key</button>
+            </div>
         </div>
     </div>
 
     <div class="grid-2col">
-        <!-- LEFT: Create / Edit / Delete Master -->
+        <!-- LEFT: create / delete / user key generator -->
         <div class="card">
-            <h2>✏️ Paste Composer</h2>
+            <h2>✍️ Create / Manage Paste</h2>
             <div class="form-group">
-                <label>🔗 Paste ID (for edit/delete — blank = new paste)</label>
-                <input type="text" id="pasteIdField" placeholder="e.g., abc123... leave empty to create">
+                <label>Paste Key (for delete only)</label>
+                <input type="text" id="pasteKeyField" placeholder="e.g., UIFdu235s (only needed for delete)">
             </div>
             <div class="form-group">
-                <label>📌 Title</label>
-                <input type="text" id="pasteTitle" placeholder="Awesome code snippet / notes">
+                <label>📌 Title / Name</label>
+                <input type="text" id="pasteTitle" placeholder="My awesome snippet">
             </div>
             <div class="form-group">
                 <label>📝 Content *</label>
-                <textarea id="pasteContent" placeholder="Write your paste content here (Markdown, code, text)"></textarea>
+                <textarea id="pasteCode" placeholder="Paste your code, notes, logs..."></textarea>
             </div>
             <div class="form-group">
-                <label>👁️ Visibility</label>
-                <select id="pasteVisibility">
-                    <option value="unlisted">Unlisted (link only)</option>
-                    <option value="public">Public 🌍</option>
-                    <option value="private">Private 🔒</option>
+                <label>🔒 Visibility</label>
+                <select id="pastePrivate">
+                    <option value="0">🌍 Public (0)</option>
+                    <option value="1" selected>👁️ Unlisted (1)</option>
+                    <option value="2">🔐 Private (2) — requires user_key</option>
                 </select>
             </div>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 0.2rem;">
-                <button id="createPasteBtn">✨ Create New</button>
-                <button id="updatePasteBtn" class="secondary">🔄 Update Selected</button>
-                <button id="deletePasteBtn" class="danger">🗑️ Delete Selected</button>
+            <div class="form-group">
+                <label>⏳ Expiration</label>
+                <select id="pasteExpire">
+                    <option value="N">Never</option>
+                    <option value="10M">10 Minutes</option>
+                    <option value="1H">1 Hour</option>
+                    <option value="1D">1 Day</option>
+                    <option value="1W">1 Week</option>
+                    <option value="2W">2 Weeks</option>
+                    <option value="1M">1 Month</option>
+                    <option value="6M">6 Months</option>
+                    <option value="1Y">1 Year</option>
+                </select>
             </div>
-            <div id="actionStatus" class="status">💡 Ready — API actions will show feedback here</div>
+            <div class="form-group">
+                <label>🎨 Syntax Highlighting (format)</label>
+                <select id="pasteFormat">
+                    <option value="text">Plain Text</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                    <option value="php">PHP</option>
+                    <option value="java">Java</option>
+                    <option value="csharp">C#</option>
+                    <option value="cpp">C++</option>
+                    <option value="html5">HTML5</option>
+                    <option value="css">CSS</option>
+                    <option value="go">Go</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="json">JSON</option>
+                    <option value="sql">SQL</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button id="createPasteBtn">✨ Create New Paste</button>
+                <button id="deletePasteBtn" class="warning">🗑️ Delete Paste</button>
+            </div>
+            <div id="actionStatus" class="status">💡 Ready — use your dev key</div>
         </div>
 
-        <!-- RIGHT: Lists & Stars Management -->
+        <!-- RIGHT: list pastes / user info / raw fetch -->
         <div class="card">
-            <h2>📚 Pastes & Interactions</h2>
-            <div style="display: flex; gap: 0.6rem; margin-bottom: 1.2rem; flex-wrap: wrap;">
-                <button id="fetchPastesBtn">🔄 My Pastes</button>
-                <button id="fetchStarredBtn" class="secondary">⭐ Starred by me</button>
-                <button id="fetchPublicBtn" class="secondary">🔥 Trending public</button>
+            <h2>📋 Account & Pastes</h2>
+            <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <button id="listPastesBtn">📄 List My Pastes</button>
+                <button id="getUserDetailsBtn" class="secondary">👤 User Info</button>
+                <button id="fetchRawFromKeyBtn" class="outline">🔗 Fetch Raw (by key)</button>
+            </div>
+            <div class="form-group" style="margin-top: 0;">
+                <label>🔎 Get raw paste by key:</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="rawPasteKeyInput" placeholder="paste key e.g. abc123" style="flex:1">
+                    <button id="loadRawBtn" class="secondary btn-sm">Load Raw</button>
+                </div>
             </div>
             <div id="pastesListContainer" class="paste-list">
-                <div class="status" style="text-align: center;">⚙️ Use buttons above to load pastes</div>
+                <div class="status">⚡ Click "List My Pastes" (requires user_key)</div>
             </div>
+            <div id="userInfoBlock" class="status" style="margin-top: 0.8rem;">📌 No user data loaded</div>
         </div>
-    </div>
-
-    <!-- account insights -->
-    <div class="card" style="margin-top: 0;">
-        <h2>👤 Account Intelligence</h2>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-            <button id="fetchUserBtn">📇 Profile</button>
-            <button id="fetchOverviewBtn" class="secondary">📊 Detailed Stats</button>
-        </div>
-        <div id="userInfoArea" class="status" style="margin-top: 1rem; white-space: pre-wrap;">🔐 Click profile to load user data</div>
     </div>
 </div>
 
 <script>
-    // ---------- CORE CONFIG ----------
-    const BASE_URL = 'https://pastefy.app/api/v2';
-    let currentApiKey = localStorage.getItem('pastefy_api_key') || 'BuAyZNqRw61RPkZtpfsrx8CBmkhZHOwHN3zn37nIIm4xlxEkH3xvc59kVFIV';
-    document.getElementById('apiKeyInput').value = currentApiKey;
+    // ---------- CONFIGURATION ----------
+    const PASTEBIN_API_POST = 'https://pastebin.com/api/api_post.php';
+    const PASTEBIN_API_LOGIN = 'https://pastebin.com/api/api_login.php';
 
-    // Helper headers
-    function authHeaders() {
-        if (!currentApiKey) return {};
-        return { 'Authorization': `Bearer ${currentApiKey}` };
+    let currentDevKey = localStorage.getItem('pastebin_dev_key') || 'S9nW5ShpEL_lZp5mvCJKb-55IzEfNyKi';
+    let currentUserKey = localStorage.getItem('pastebin_user_key') || '';
+
+    // DOM elements
+    const devKeyInput = document.getElementById('devKeyInput');
+    const userKeyInput = document.getElementById('userKeyInput');
+    const saveDevBtn = document.getElementById('saveDevKeyBtn');
+    const loginFormBtn = document.getElementById('loginViaFormBtn');
+    const createBtn = document.getElementById('createPasteBtn');
+    const deleteBtn = document.getElementById('deletePasteBtn');
+    const listBtn = document.getElementById('listPastesBtn');
+    const userDetailsBtn = document.getElementById('getUserDetailsBtn');
+    const loadRawBtn = document.getElementById('loadRawBtn');
+    const fetchRawByKeyBtn = document.getElementById('fetchRawFromKeyBtn');
+    const rawPasteKeyInput = document.getElementById('rawPasteKeyInput');
+    const actionStatusDiv = document.getElementById('actionStatus');
+    const pastesContainer = document.getElementById('pastesListContainer');
+    const userInfoBlock = document.getElementById('userInfoBlock');
+
+    // init inputs
+    devKeyInput.value = currentDevKey;
+    userKeyInput.value = currentUserKey;
+
+    function setActionStatus(msg, isError = false) {
+        actionStatusDiv.innerText = msg;
+        actionStatusDiv.className = `status ${isError ? 'error-status' : 'success-status'}`;
+        setTimeout(() => {
+            if (actionStatusDiv.innerText === msg) {
+                actionStatusDiv.className = 'status';
+            }
+        }, 4500);
     }
 
-    // robust fetch
-    async function apiRequest(endpoint, options = {}) {
-        const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
-        const headers = {
-            'Content-Type': 'application/json',
-            ...authHeaders(),
-            ...options.headers,
-        };
+    function setUserInfoMessage(msg, isError = false) {
+        userInfoBlock.innerText = msg;
+        userInfoBlock.className = `status ${isError ? 'error-status' : 'success-status'}`;
+    }
+
+    // generic api_post request
+    async function callPastebinAPI(postData) {
         try {
-            const response = await fetch(url, { ...options, headers });
-            let data = null;
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
-            } else if (!response.ok) {
-                const text = await response.text();
-                throw new Error(`HTTP ${response.status}: ${text.slice(0, 120)}`);
+            const formBody = new URLSearchParams(postData).toString();
+            const response = await fetch(PASTEBIN_API_POST, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formBody
+            });
+            const text = await response.text();
+            if (text.startsWith('Bad API request') || text.includes('Bad API')) {
+                throw new Error(text.substring(0, 200));
             }
-            if (!response.ok) {
-                const errMsg = data?.message || data?.error || `Request error (${response.status})`;
-                throw new Error(errMsg);
-            }
-            return { data, status: response.status, ok: true };
+            return { ok: true, data: text };
         } catch (err) {
-            console.warn('[API]', err);
             return { ok: false, error: err.message };
         }
     }
 
-    // UI feedback
-    function setActionStatus(msg, isError = false) {
-        const statusDiv = document.getElementById('actionStatus');
-        statusDiv.innerText = msg;
-        statusDiv.className = `status ${isError ? 'error-status' : 'success-status'}`;
-        setTimeout(() => {
-            if (document.getElementById('actionStatus') === statusDiv && !isError) {
-                statusDiv.className = 'status';
+    // login & get user key
+    async function fetchUserKey(username, password) {
+        if (!currentDevKey) throw new Error('Dev key missing');
+        const formData = {
+            api_dev_key: currentDevKey,
+            api_user_name: username,
+            api_user_password: password
+        };
+        const body = new URLSearchParams(formData).toString();
+        try {
+            const res = await fetch(PASTEBIN_API_LOGIN, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body
+            });
+            const key = await res.text();
+            if (key.includes('Bad API request') || key.includes('invalid')) {
+                throw new Error(key);
             }
-        }, 4200);
+            if (key.length >= 16) return key.trim();
+            throw new Error('Invalid response: ' + key);
+        } catch (err) {
+            throw new Error(`Login failed: ${err.message}`);
+        }
     }
 
-    function setUserInfo(text, isError = false) {
-        const area = document.getElementById('userInfoArea');
-        area.innerText = text;
-        area.className = `status ${isError ? 'error-status' : 'success-status'}`;
+    // create paste
+    async function createPaste() {
+        if (!currentDevKey) { setActionStatus('❌ Set Developer API Key first', true); return; }
+        const pasteCode = document.getElementById('pasteCode').value.trim();
+        if (!pasteCode) { setActionStatus('❌ Paste content cannot be empty', true); return; }
+        const title = document.getElementById('pasteTitle').value.trim() || 'Untitled';
+        const privacy = document.getElementById('pastePrivate').value;
+        const expire = document.getElementById('pasteExpire').value;
+        const format = document.getElementById('pasteFormat').value;
+        const userKey = currentUserKey || '';
+
+        const params = {
+            api_dev_key: currentDevKey,
+            api_option: 'paste',
+            api_paste_code: pasteCode,
+            api_paste_name: title,
+            api_paste_private: privacy,
+            api_paste_expire_date: expire,
+            api_paste_format: format,
+        };
+        if (userKey) params.api_user_key = userKey;
+
+        const result = await callPastebinAPI(params);
+        if (result.ok && result.data && (result.data.startsWith('https://pastebin.com/') || result.data.includes('pastebin.com'))) {
+            setActionStatus(`✅ Paste created! URL: ${result.data}`, false);
+            document.getElementById('pasteCode').value = '';
+            document.getElementById('pasteTitle').value = '';
+            // refresh list if user key exists
+            if (currentUserKey) await listPastes();
+        } else {
+            setActionStatus(`❌ Create failed: ${result.data || result.error}`, true);
+        }
     }
 
-    // ---------- RENDER engine with star/unstar, edit, delete, raw ----------
-    function renderPastesList(pastes, isStarredContext = false) {
-        const container = document.getElementById('pastesListContainer');
-        if (!pastes || pastes.length === 0) {
-            container.innerHTML = '<div class="status">✨ No pastes found. Create your first paste!</div>';
+    // delete paste
+    async function deletePaste() {
+        const pasteKey = document.getElementById('pasteKeyField').value.trim();
+        if (!pasteKey) { setActionStatus('⚠️ Enter Paste Key to delete', true); return; }
+        if (!currentDevKey) { setActionStatus('Dev key missing', true); return; }
+        if (!currentUserKey) { setActionStatus('User session key required for deletion (login)', true); return; }
+        const params = {
+            api_dev_key: currentDevKey,
+            api_user_key: currentUserKey,
+            api_option: 'delete',
+            api_paste_key: pasteKey
+        };
+        const result = await callPastebinAPI(params);
+        if (result.ok && result.data.includes('Paste Removed')) {
+            setActionStatus(`🗑️ Paste "${pasteKey}" removed successfully`, false);
+            document.getElementById('pasteKeyField').value = '';
+            await listPastes();
+        } else {
+            setActionStatus(`Delete error: ${result.data || result.error}`, true);
+        }
+    }
+
+    // list pastes (requires user_key)
+    async function listPastes(limit = 50) {
+        if (!currentDevKey) { setActionStatus('Dev key required', true); return; }
+        if (!currentUserKey) { 
+            pastesContainer.innerHTML = '<div class="status">🔐 Please obtain and set a User Session Key (via login) to list pastes</div>';
+            setActionStatus('Missing api_user_key, use login form', true);
             return;
         }
-        container.innerHTML = '';
+        const params = {
+            api_dev_key: currentDevKey,
+            api_user_key: currentUserKey,
+            api_option: 'list',
+            api_results_limit: Math.min(limit, 100)
+        };
+        const result = await callPastebinAPI(params);
+        if (!result.ok) {
+            pastesContainer.innerHTML = `<div class="status error-status">❌ Failed: ${result.error}</div>`;
+            return;
+        }
+        const xmlText = result.data;
+        if (xmlText.includes('No pastes found')) {
+            pastesContainer.innerHTML = '<div class="status">📭 No pastes found for this user.</div>';
+            return;
+        }
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+        const pastes = xmlDoc.querySelectorAll('paste');
+        if (pastes.length === 0) {
+            pastesContainer.innerHTML = '<div class="status">📭 No pastes or invalid XML.</div>';
+            return;
+        }
+        let html = '';
         pastes.forEach(paste => {
-            const pasteId = paste.id || paste._id;
-            if (!pasteId) return;
-            const title = paste.title || '📄 Untitled';
-            const contentRaw = paste.content || '';
-            const contentPreview = contentRaw.length > 100 ? contentRaw.substring(0, 100) + '…' : (contentRaw || '(empty)');
-            const createdAt = paste.created_at ? new Date(paste.created_at).toLocaleString() : 'unknown date';
-            const visibility = paste.visibility || '—';
-            const starCount = paste.stars ?? (paste.star_count ?? 0);
-            const isStarredByMe = paste.starred === true;
-
-            const div = document.createElement('div');
-            div.className = 'paste-item';
-            div.innerHTML = `
-                <div class="paste-title">
-                    📄 ${escapeHtml(title)} <span class="pill-id">${escapeHtml(pasteId.slice(0, 12))}…</span>
-                </div>
-                <div class="paste-meta">
-                    <span>📅 ${escapeHtml(createdAt)}</span>
-                    <span>🔒 ${escapeHtml(visibility)}</span>
-                    <span>⭐ ${starCount}</span>
-                    ${isStarredByMe ? '<span class="star-badge">★ starred by you</span>' : ''}
-                </div>
-                <div class="paste-meta">✏️ ${escapeHtml(contentPreview)}</div>
-                <div class="actions">
-                    <button class="btn-sm edit-paste" data-id="${escapeHtml(pasteId)}" data-title="${escapeHtml(title)}" data-content="${escapeHtml(contentRaw)}" data-vis="${escapeHtml(visibility)}">✏️ Edit</button>
-                    <button class="btn-sm danger delete-paste" data-id="${escapeHtml(pasteId)}">🗑️ Del</button>
-                    <button class="btn-sm star-act" data-id="${escapeHtml(pasteId)}" data-starred="${isStarredByMe}">${isStarredByMe ? '★ Unstar' : '☆ Star'}</button>
-                    <button class="btn-sm raw-view" data-id="${escapeHtml(pasteId)}">📄 Raw</button>
+            const key = paste.querySelector('paste_key')?.textContent || '?';
+            const title = paste.querySelector('paste_title')?.textContent || 'Untitled';
+            const date = paste.querySelector('paste_date')?.textContent;
+            const dateStr = date ? new Date(parseInt(date) * 1000).toLocaleString() : 'unknown';
+            const size = paste.querySelector('paste_size')?.textContent || '0';
+            const url = paste.querySelector('paste_url')?.textContent || '#';
+            const hits = paste.querySelector('paste_hits')?.textContent || '0';
+            const privacyVal = paste.querySelector('paste_private')?.textContent;
+            const privacyLabel = privacyVal === '0' ? 'Public' : (privacyVal === '1' ? 'Unlisted' : 'Private');
+            html += `
+                <div class="paste-item">
+                    <div class="paste-title">📄 ${escapeHtml(title)} <span style="opacity:0.7;">[${escapeHtml(key)}]</span></div>
+                    <div class="paste-meta">
+                        <span>📅 ${escapeHtml(dateStr)}</span>
+                        <span>🔒 ${escapeHtml(privacyLabel)}</span>
+                        <span>👁️ ${escapeHtml(hits)} hits</span>
+                        <span>📦 ${escapeHtml(size)} chars</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-sm raw-action" data-key="${escapeHtml(key)}">📄 Raw</button>
+                        <button class="btn-sm delete-action" data-key="${escapeHtml(key)}">🗑️ Delete</button>
+                        <a href="${escapeHtml(url)}" target="_blank" class="btn-sm" style="background:#334155; text-decoration:none; display:inline-block; padding:4px 10px; border-radius:30px;">🔗 Open</a>
+                    </div>
                 </div>
             `;
-            container.appendChild(div);
         });
-
-        // attach events
-        document.querySelectorAll('.edit-paste').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-id');
-                const t = btn.getAttribute('data-title');
-                const c = btn.getAttribute('data-content');
-                const v = btn.getAttribute('data-vis');
-                document.getElementById('pasteIdField').value = id;
-                document.getElementById('pasteTitle').value = t;
-                document.getElementById('pasteContent').value = c;
-                document.getElementById('pasteVisibility').value = v;
-                setActionStatus(`✏️ Loaded paste "${id}" ready for update`, false);
+        pastesContainer.innerHTML = html;
+        // attach raw actions
+        document.querySelectorAll('.raw-action').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const key = btn.getAttribute('data-key');
+                fetchRawPasteByKey(key, false);
             });
         });
-
-        document.querySelectorAll('.delete-paste').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const id = btn.getAttribute('data-id');
-                if (confirm(`⚠️ Permanently delete paste "${id}"?`)) {
-                    const ok = await deletePasteById(id);
-                    if (ok) await fetchMyPastes();
+        document.querySelectorAll('.delete-action').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const key = btn.getAttribute('data-key');
+                if (confirm(`Delete paste ${key} permanently?`)) {
+                    document.getElementById('pasteKeyField').value = key;
+                    await deletePaste();
+                    await listPastes();
                 }
             });
         });
-
-        document.querySelectorAll('.star-act').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const id = btn.getAttribute('data-id');
-                const currently = btn.getAttribute('data-starred') === 'true';
-                if (currently) {
-                    await unstarPaste(id);
-                } else {
-                    await starPaste(id);
-                }
-                await fetchMyPastes();
-                setActionStatus(`⭐ Star toggled on ${id}`, false);
-            });
-        });
-
-        document.querySelectorAll('.raw-view').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const id = btn.getAttribute('data-id');
-                await fetchRawPaste(id);
-            });
-        });
+        setActionStatus(`Loaded ${pastes.length} pastes`, false);
     }
 
-    // --- API actions ---
-    async function fetchRawPaste(pasteId) {
-        const result = await apiRequest(`/paste/${pasteId}/raw`, { method: 'GET' });
-        if (result.ok && (result.data !== undefined)) {
-            const raw = typeof result.data === 'string' ? result.data : JSON.stringify(result.data, null, 2);
-            alert(`📄 RAW content [${pasteId}]:\n\n${raw.substring(0, 2800)}`);
-            setActionStatus(`✅ Raw content retrieved for ${pasteId}`);
-        } else {
-            setActionStatus(`❌ Raw fetch failed: ${result.error}`, true);
+    async function fetchRawPasteByKey(pasteKey, isGuestMode = false) {
+        if (!pasteKey) return;
+        try {
+            let url = `https://pastebin.com/raw/${pasteKey}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const raw = await res.text();
+            alert(`📜 RAW content for ${pasteKey}:\n\n${raw.substring(0, 3000)}${raw.length > 3000 ? '\n... (truncated)' : ''}`);
+            setActionStatus(`Raw content loaded for ${pasteKey}`, false);
+        } catch (err) {
+            setActionStatus(`Failed to fetch raw: ${err.message}`, true);
         }
     }
 
-    async function starPaste(pasteId) {
-        const result = await apiRequest(`/paste/${pasteId}/star`, { method: 'POST' });
-        if (!result.ok) setActionStatus(`Star failed: ${result.error}`, true);
-        return result.ok;
-    }
-
-    async function unstarPaste(pasteId) {
-        const result = await apiRequest(`/paste/${pasteId}/star`, { method: 'DELETE' });
-        if (!result.ok) setActionStatus(`Unstar failed: ${result.error}`, true);
-        return result.ok;
-    }
-
-    async function deletePasteById(pasteId) {
-        const result = await apiRequest(`/paste/${pasteId}`, { method: 'DELETE' });
-        if (result.ok) {
-            setActionStatus(`🗑️ Paste ${pasteId} deleted.`, false);
-            return true;
-        } else {
-            setActionStatus(`Delete error: ${result.error}`, true);
-            return false;
+    // user details
+    async function fetchUserDetails() {
+        if (!currentDevKey) { setUserInfoMessage('Dev key required', true); return; }
+        if (!currentUserKey) { setUserInfoMessage('User session key required (login first)', true); return; }
+        const params = {
+            api_dev_key: currentDevKey,
+            api_user_key: currentUserKey,
+            api_option: 'userdetails'
+        };
+        const result = await callPastebinAPI(params);
+        if (!result.ok) {
+            setUserInfoMessage(`User details error: ${result.error}`, true);
+            return;
         }
-    }
-
-    async function fetchMyPastes() {
-        if (!currentApiKey) { setActionStatus("❌ API key missing", true); return; }
-        const result = await apiRequest('/user/pastes', { method: 'GET' });
-        if (result.ok && result.data) {
-            let pastes = Array.isArray(result.data) ? result.data : (result.data.pastes || []);
-            renderPastesList(pastes, false);
-            setActionStatus(`📋 Loaded ${pastes.length} pastes`, false);
-        } else {
-            renderPastesList([], false);
-            setActionStatus(`Failed to load pastes: ${result.error}`, true);
+        const xmlText = result.data;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(xmlText, 'text/xml');
+        const user = doc.querySelector('user');
+        if (!user) {
+            setUserInfoMessage('Could not parse user info', true);
+            return;
         }
+        const name = user.querySelector('user_name')?.textContent || 'N/A';
+        const format = user.querySelector('user_format_short')?.textContent || 'text';
+        const expiration = user.querySelector('user_expiration')?.textContent || 'N';
+        const avatar = user.querySelector('user_avatar_url')?.textContent || '';
+        const privateSetting = user.querySelector('user_private')?.textContent;
+        setUserInfoMessage(`👤 ${escapeHtml(name)} | Default format: ${format} | Expire: ${expiration} | Private mode: ${privateSetting === '1' ? 'Unlisted' : 'Public'} ${avatar ? '| avatar present' : ''}`, false);
     }
 
-    async function fetchStarredPastes() {
-        if (!currentApiKey) { setActionStatus("No API key", true); return; }
-        const result = await apiRequest('/user/starred', { method: 'GET' });
-        if (result.ok && result.data) {
-            let starred = Array.isArray(result.data) ? result.data : (result.data.starred || result.data.pastes || []);
-            renderPastesList(starred, true);
-            setActionStatus(`⭐ ${starred.length} starred pastes loaded`, false);
-        } else {
-            setActionStatus(`Starred error: ${result.error}`, true);
-        }
-    }
-
-    async function fetchTrendingPublic() {
-        const result = await apiRequest('/pastes/trending', { method: 'GET' });
-        if (result.ok && result.data) {
-            let trending = Array.isArray(result.data) ? result.data : (result.data.pastes || []);
-            renderPastesList(trending, false);
-            setActionStatus(`🌍 Trending: ${trending.length} public pastes`, false);
-        } else {
-            setActionStatus(`Trending error: ${result.error}`, true);
-        }
-    }
-
-    async function createPaste() {
-        const title = document.getElementById('pasteTitle').value;
-        const content = document.getElementById('pasteContent').value;
-        const visibility = document.getElementById('pasteVisibility').value;
-        if (!content.trim()) { setActionStatus("❌ Paste content cannot be empty", true); return; }
-        const payload = { title, content, visibility };
-        const result = await apiRequest('/paste', { method: 'POST', body: JSON.stringify(payload) });
-        if (result.ok && result.data) {
-            const newId = result.data.id || 'created';
-            setActionStatus(`✅ Paste "${title || 'untitled'}" created! ID: ${newId}`, false);
-            document.getElementById('pasteIdField').value = '';
-            document.getElementById('pasteTitle').value = '';
-            document.getElementById('pasteContent').value = '';
-            await fetchMyPastes();
-        } else {
-            setActionStatus(`Create failed: ${result.error}`, true);
-        }
-    }
-
-    async function updatePaste() {
-        const pasteId = document.getElementById('pasteIdField').value.trim();
-        if (!pasteId) { setActionStatus("⚠️ Provide a Paste ID to update", true); return; }
-        const title = document.getElementById('pasteTitle').value;
-        const content = document.getElementById('pasteContent').value;
-        const visibility = document.getElementById('pasteVisibility').value;
-        if (!content.trim() && !title.trim()) { setActionStatus("At least content or title required", true); return; }
-        const payload = { title, content, visibility };
-        const result = await apiRequest(`/paste/${pasteId}`, { method: 'PUT', body: JSON.stringify(payload) });
-        if (result.ok) {
-            setActionStatus(`✏️ Paste ${pasteId} updated successfully`, false);
-            await fetchMyPastes();
-        } else {
-            setActionStatus(`Update error: ${result.error}`, true);
-        }
-    }
-
-    async function deleteSelected() {
-        const pasteId = document.getElementById('pasteIdField').value.trim();
-        if (!pasteId) { setActionStatus("No paste ID selected for deletion", true); return; }
-        if (confirm(`Delete paste "${pasteId}"? This action is permanent.`)) {
-            const ok = await deletePasteById(pasteId);
-            if (ok) {
-                document.getElementById('pasteIdField').value = '';
-                await fetchMyPastes();
+    // login popup style (simple prompt)
+    async function interactiveLogin() {
+        const username = prompt('Enter Pastebin username:');
+        if (!username) return;
+        const password = prompt('Enter Pastebin password:');
+        if (!password) return;
+        setActionStatus('Logging in, obtaining user key...', false);
+        try {
+            const userKey = await fetchUserKey(username, password);
+            if (userKey && !userKey.includes('Bad')) {
+                currentUserKey = userKey;
+                localStorage.setItem('pastebin_user_key', currentUserKey);
+                userKeyInput.value = currentUserKey;
+                setActionStatus(`✅ User key obtained: ${userKey.substring(0, 10)}...`, false);
+                setUserInfoMessage('User key ready! Use "List My Pastes" or "User Info"', false);
+            } else {
+                throw new Error(userKey);
             }
+        } catch (err) {
+            setActionStatus(`Login error: ${err.message}`, true);
         }
     }
 
-    async function fetchUser() {
-        const result = await apiRequest('/user', { method: 'GET' });
-        if (result.ok && result.data) {
-            const u = result.data;
-            setUserInfo(`👤 User: ${u.username || u.name || 'N/A'}  |  📧 ${u.email || 'private'}  |  🆔 ${u.id || '—'}\n📅 Joined: ${u.created_at ? new Date(u.created_at).toLocaleString() : 'unknown'}\n📦 Full profile: ${JSON.stringify(u, null, 2)}`);
-        } else {
-            setUserInfo(`🔐 Failed: ${result.error}`, true);
-        }
-    }
-
-    async function fetchOverview() {
-        const result = await apiRequest('/user/overview', { method: 'GET' });
-        if (result.ok && result.data) {
-            setUserInfo(`📊 ACCOUNT OVERVIEW\n${JSON.stringify(result.data, null, 2)}`);
-        } else {
-            setUserInfo(`Overview error: ${result.error}`, true);
-        }
-    }
-
-    function saveApiKey() {
-        const newKey = document.getElementById('apiKeyInput').value.trim();
+    // Save dev key
+    function saveDevKey() {
+        const newKey = devKeyInput.value.trim();
         if (newKey) {
-            currentApiKey = newKey;
-            localStorage.setItem('pastefy_api_key', newKey);
-            setActionStatus("🔐 API key saved and active", false);
-            fetchMyPastes().catch(()=>{});
-            fetchUser().catch(()=>{});
+            currentDevKey = newKey;
+            localStorage.setItem('pastebin_dev_key', currentDevKey);
+            setActionStatus('Developer API Key saved', false);
         } else {
-            setActionStatus("Invalid API key", true);
+            setActionStatus('Invalid dev key', true);
         }
     }
 
-    // ---- event binding ----
-    document.getElementById('saveKeyBtn').addEventListener('click', saveApiKey);
-    document.getElementById('createPasteBtn').addEventListener('click', createPaste);
-    document.getElementById('updatePasteBtn').addEventListener('click', updatePaste);
-    document.getElementById('deletePasteBtn').addEventListener('click', deleteSelected);
-    document.getElementById('fetchPastesBtn').addEventListener('click', fetchMyPastes);
-    document.getElementById('fetchStarredBtn').addEventListener('click', fetchStarredPastes);
-    document.getElementById('fetchPublicBtn').addEventListener('click', fetchTrendingPublic);
-    document.getElementById('fetchUserBtn').addEventListener('click', fetchUser);
-    document.getElementById('fetchOverviewBtn').addEventListener('click', fetchOverview);
-
-    // initial load with existing key
-    if (currentApiKey) {
-        fetchMyPastes().catch(e => console.warn(e));
-        fetchUser().catch(e => console.warn(e));
+    // manual raw fetch from input
+    function manualRawFetch() {
+        const key = rawPasteKeyInput.value.trim();
+        if (!key) { setActionStatus('Enter paste key', true); return; }
+        fetchRawPasteByKey(key, true);
     }
+
+    // event binding
+    saveDevBtn.addEventListener('click', saveDevKey);
+    loginFormBtn.addEventListener('click', interactiveLogin);
+    createBtn.addEventListener('click', createPaste);
+    deleteBtn.addEventListener('click', deletePaste);
+    listBtn.addEventListener('click', () => listPastes(60));
+    userDetailsBtn.addEventListener('click', fetchUserDetails);
+    loadRawBtn.addEventListener('click', manualRawFetch);
+    fetchRawByKeyBtn.addEventListener('click', () => {
+        const key = prompt('Enter paste key to get raw content:', '');
+        if (key) fetchRawPasteByKey(key, true);
+    });
 
     function escapeHtml(str) {
         if (!str) return '';
-        return String(str).replace(/[&<>]/g, function(m) {
+        return str.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
         });
+    }
+
+    // initial hint
+    if (currentUserKey) {
+        setActionStatus('User session key loaded from storage', false);
+        userInfoBlock.innerText = '✅ User key ready. Click "List My Pastes"';
     }
 </script>
 </body>
