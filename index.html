@@ -1,459 +1,264 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>scriptbin · raw script pastebin</title>
-    <!-- no design — raw/plain style, minimal functional -->
+    <title>scriptbin - raw script pastebin</title>
 </head>
-<body>
-<pre style="font-family: monospace; margin: 20px; white-space: pre-wrap; word-break: break-word;" id="main-message">loading script manager...</pre>
-
-<div id="app-root" style="display: none;">
-    <!-- absolutely no extra styling, just functional elements -->
+<body style="font-family: monospace; max-width: 900px; margin: 20px auto; padding: 0 20px;">
+    <h1>📜 scriptbin</h1>
+    <p>raw script storage — <a href="/api/">list all scripts</a> | append filename for raw view: <code>/api/scriptname</code></p>
+    
     <hr>
-    <div id="login-area">
-        <label>admin password: </label><input type="password" id="admin-pass" placeholder="karah123"><button id="login-btn">unlock edit</button>
-        <span id="login-msg" style="color:red;"></span>
-    </div>
-    <div id="admin-panel" style="display: none; border-top: 1px solid gray; margin-top: 16px; padding-top: 12px;">
-        <h3>✎ script editor (admin)</h3>
-        <div id="script-list"></div>
-        <div style="margin-top: 20px;">
-            <strong>create new script</strong><br>
-            filename: <input type="text" id="new-filename" placeholder="example.sh or script.py" style="width: 250px;"><br>
-            content:<br>
-            <textarea id="new-content" rows="6" cols="70" placeholder="paste script content here..."></textarea><br>
-            <button id="create-script-btn">➕ create file</button>
-            <button id="refresh-list-btn">⟳ refresh</button>
-            <div id="status-msg" style="color: #2c5e2e; margin-top: 8px;"></div>
-        </div>
-        <div style="margin-top: 20px; font-size: 12px; color: #333;">
-            ⚡ scripts are stored as real files inside <strong>/api/</strong> directory (e.g. /api/scriptname).<br>
-            🔗 RAW urls: <code>/api/{filename}</code> → anyone can view raw script.
-        </div>
-    </div>
-    <div id="public-scripts-view" style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
+    
+    <div id="public">
         <h3>📄 all public scripts (raw available)</h3>
-        <div id="public-list"></div>
+        <div id="public-list">loading...</div>
     </div>
-</div>
-
-<script>
-    // ============================================================
-    // SCRIPTBIN - RAW / PASTEBIN STYLE
-    // ============================================================
-    // Password: karah123
-    // Scripts are stored as plain files inside "/api/" folder (relative to project root)
-    // GET  /api/{filename}          -> raw script content (anyone can access)
-    // GET  /api/                    -> returns JSON list of script filenames
-    // PUT  /api/{filename}          -> create/overwrite script (admin only, via password)
-    // DELETE /api/{filename}        -> delete script (admin)
-    //
-    // For this to work on a real server (github pages needs backend), we implement
-    // a fully functional demo that uses localStorage + fetch simulation BUT 
-    // also provides the exact endpoints so that if the backend (node/php) exists it will work.
-    // However the requirement says: "make sure it actually works so yeah im raw dont add any design"
-    // and "put it in api folder not api/scripts" + raw view.
-    // I will implement a robust API proxy that uses localStorage as fallback but also
-    // shows the exact API contract and works 100% in the browser with file-like behaviour.
-    // To make it "actually work" and raw accessible to everyone, we will generate real raw links
-    // that point to virtual endpoints BUT also use localStorage to simulate files.
-    // The user can also host a simple server. I'll include instructions in comments.
-    // But for the pure HTML/JS, I'll ensure that "raw" links open the content in a new tab
-    // using blob/data or localStorage fetch. But to truly respect /api/filename structure,
-    // I will intercept clicks and display raw content dynamically, and the "raw" link will
-    // show the script as plain text (no design). Also the admin panel writes/reads from
-    // localStorage but uses the same /api/ endpoints pattern.
     
-    // ---------- configuration ----------
-    const ADMIN_PASSWORD = "karah123";
-    let isAdminLogged = false;
+    <hr>
     
-    // API base: scripts are inside "/api/" folder (no /api/scripts)
-    const API_BASE = "/api/";   // e.g. /api/myscript.sh
+    <div id="login-section">
+        <h3>🔐 admin edit panel</h3>
+        <input type="password" id="password" placeholder="password (karah123)">
+        <button id="unlock">unlock editor</button>
+        <span id="login-error" style="color:red;"></span>
+    </div>
     
-    // storage prefix for localStorage fallback (so that files persist)
-    const STORAGE_PREFIX = "scriptbin_api_";
+    <div id="admin-panel" style="display:none;">
+        <div id="admin-status" style="background:#e0ffe0; padding:5px;"></div>
+        
+        <h4>✏️ edit existing scripts</h4>
+        <div id="script-list">loading...</div>
+        
+        <h4>➕ create new script</h4>
+        <input type="text" id="new-name" placeholder="filename (e.g., myscript.sh)" style="width: 300px;"><br>
+        <textarea id="new-content" rows="8" cols="70" placeholder="paste script content here..."></textarea><br>
+        <button id="create-btn">create script</button>
+        <button id="refresh-btn">refresh list</button>
+    </div>
     
-    // DOM elements
-    const mainMsg = document.getElementById("main-message");
-    const appRoot = document.getElementById("app-root");
-    const loginArea = document.getElementById("login-area");
-    const adminPassInput = document.getElementById("admin-pass");
-    const loginBtn = document.getElementById("login-btn");
-    const loginMsgSpan = document.getElementById("login-msg");
-    const adminPanel = document.getElementById("admin-panel");
-    const scriptListDiv = document.getElementById("script-list");
-    const newFilenameInput = document.getElementById("new-filename");
-    const newContentTextarea = document.getElementById("new-content");
-    const createScriptBtn = document.getElementById("create-script-btn");
-    const refreshListBtn = document.getElementById("refresh-list-btn");
-    const statusMsgDiv = document.getElementById("status-msg");
-    const publicListDiv = document.getElementById("public-list");
-    
-    // Helper: show status in admin panel
-    function setStatusMsg(msg, isError = false) {
-        statusMsgDiv.innerHTML = msg;
-        statusMsgDiv.style.color = isError ? "#b00020" : "#2c5e2e";
-        setTimeout(() => {
-            if (statusMsgDiv.innerHTML === msg) statusMsgDiv.innerHTML = "";
-        }, 3000);
-    }
-    
-    // ---------- API functions (real fetch + localStorage fallback) ----------
-    // Get list of all script filenames from /api/ (GET /api/)
-    async function fetchScriptList() {
-        try {
-            const response = await fetch(API_BASE, {
-                method: "GET",
-                headers: { "Accept": "application/json" }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                if (Array.isArray(data)) return data;
-                if (data && Array.isArray(data.files)) return data.files;
-                if (data && Array.isData(data.scripts)) return data.scripts;
+    <script>
+        const API_BASE = '/api/';
+        let adminPassword = null;
+        
+        async function fetchWithAuth(url, options = {}) {
+            const headers = options.headers || {};
+            if (adminPassword) headers['X-Password'] = adminPassword;
+            const res = await fetch(url, { ...options, headers });
+            if (res.status === 401) {
+                alert('wrong password or session expired');
+                adminPassword = null;
+                location.reload();
             }
-        } catch(e) { /* fallback */ }
-        // localStorage mock: get all keys with prefix
-        const files = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key && key.startsWith(STORAGE_PREFIX)) {
-                let filename = key.slice(STORAGE_PREFIX.length);
-                files.push(filename);
-            }
+            return res;
         }
-        return files;
-    }
-    
-    // fetch raw content of a script (GET /api/{filename})
-    async function fetchRawScript(filename) {
-        const encoded = encodeURIComponent(filename);
-        try {
-            const res = await fetch(API_BASE + encoded, { method: "GET" });
-            if (res.ok) {
-                const text = await res.text();
-                return text;
-            }
-        } catch(e) {}
-        // fallback to localStorage
-        const key = STORAGE_PREFIX + filename;
-        return localStorage.getItem(key) || "";
-    }
-    
-    // save/overwrite script (PUT /api/{filename}) - admin only
-    async function saveScript(filename, content) {
-        const encoded = encodeURIComponent(filename);
-        try {
-            const res = await fetch(API_BASE + encoded, {
-                method: "PUT",
-                headers: { "Content-Type": "text/plain" },
+        
+        async function listScripts() {
+            const res = await fetch(API_BASE);
+            if (res.ok) return await res.json();
+            return [];
+        }
+        
+        async function loadRawScript(filename) {
+            const res = await fetch(API_BASE + encodeURIComponent(filename));
+            if (res.ok) return await res.text();
+            return '';
+        }
+        
+        async function saveScript(filename, content) {
+            const res = await fetchWithAuth(API_BASE + encodeURIComponent(filename), {
+                method: 'PUT',
                 body: content
             });
-            if (res.ok) return true;
-        } catch(e) {}
-        // fallback: store in localStorage
-        const key = STORAGE_PREFIX + filename;
-        localStorage.setItem(key, content);
-        return true;
-    }
-    
-    // delete script (DELETE /api/{filename})
-    async function deleteScript(filename) {
-        const encoded = encodeURIComponent(filename);
-        try {
-            const res = await fetch(API_BASE + encoded, { method: "DELETE" });
-            if (res.ok) return true;
-        } catch(e) {}
-        const key = STORAGE_PREFIX + filename;
-        localStorage.removeItem(key);
-        return true;
-    }
-    
-    // ---------- render public scripts (everyone can see + raw links) ----------
-    async function renderPublicScripts() {
-        const files = await fetchScriptList();
-        if (!files.length) {
-            publicListDiv.innerHTML = "<i>no scripts uploaded yet. (admin can create)</i>";
-            return;
+            return res.ok;
         }
-        let html = `<ul style="list-style: none; padding-left: 0;">`;
-        for (let f of files) {
-            const safeName = escapeHtml(f);
-            // raw link points to /api/{filename} (absolute raw endpoint)
-            const rawUrl = `${API_BASE}${encodeURIComponent(f)}`;
-            html += `<li style="margin-bottom: 12px;">
-                <strong>📄 ${safeName}</strong><br>
-                <span style="font-size: 12px;">🔗 raw: <a href="${rawUrl}" target="_blank" rel="noopener noreferrer">${rawUrl}</a></span>
-                &nbsp;|&nbsp;<button class="view-raw-btn" data-filename="${escapeAttr(f)}" style="background:none;border:1px solid gray;cursor:pointer;">view raw inline</button>
-                <pre id="raw-preview-${escapeAttr(f)}" style="display:none; background:#f4f4f4; padding:8px; margin-top:6px; overflow:auto; max-height:200px; font-size:12px;"></pre>
-            </li>`;
-        }
-        html += `</ul><p style="font-size:12px;">※ raw links are permanent — anyone with the link can see plain script.</p>`;
-        publicListDiv.innerHTML = html;
         
-        // attach event listeners for "view raw inline" buttons
-        for (let f of files) {
-            const btn = publicListDiv.querySelector(`.view-raw-btn[data-filename="${escapeAttr(f)}"]`);
-            if (btn) {
-                btn.addEventListener("click", async (e) => {
-                    const previewDiv = document.getElementById(`raw-preview-${escapeAttr(f)}`);
-                    if (previewDiv.style.display === "none" || !previewDiv.style.display) {
-                        const rawContent = await fetchRawScript(f);
-                        previewDiv.textContent = rawContent || "(empty script)";
-                        previewDiv.style.display = "block";
-                        btn.textContent = "hide raw";
-                    } else {
-                        previewDiv.style.display = "none";
-                        btn.textContent = "view raw inline";
-                    }
-                });
-            }
+        async function deleteScript(filename) {
+            const res = await fetchWithAuth(API_BASE + encodeURIComponent(filename), {
+                method: 'DELETE'
+            });
+            return res.ok;
         }
-    }
-    
-    // ---------- admin panel: render editable script list with raw & edit/delete ----------
-    async function renderAdminScriptList() {
-        if (!isAdminLogged) return;
-        const files = await fetchScriptList();
-        if (!files.length) {
-            scriptListDiv.innerHTML = "<i>no scripts found. create one below ↓</i>";
-            return;
-        }
-        let html = `<div style="margin-bottom: 16px;"><strong>📁 existing scripts (edit/delete):</strong></div>`;
-        for (let f of files) {
-            const safeName = escapeHtml(f);
-            const rawUrl = `${API_BASE}${encodeURIComponent(f)}`;
-            // get current content preview
-            let contentPreview = await fetchRawScript(f);
-            let shortPreview = contentPreview.length > 100 ? contentPreview.substring(0, 100) + "..." : contentPreview;
-            shortPreview = shortPreview.replace(/\n/g, "⏎ ");
-            html += `
-            <div style="border:1px solid #ccc; margin:12px 0; padding:10px; background:#fafafa;">
-                <div><strong>${safeName}</strong> 
-                    <span style="font-size:12px;">&nbsp; <a href="${rawUrl}" target="_blank">[raw]</a></span>
-                    <button class="admin-edit-btn" data-filename="${escapeAttr(f)}" style="margin-left:10px;">✎ edit</button>
-                    <button class="admin-delete-btn" data-filename="${escapeAttr(f)}" style="margin-left:6px;">🗑 delete</button>
-                </div>
-                <div style="font-family: monospace; font-size:12px; background:#eee; padding:6px; margin-top:6px; white-space:pre-wrap; word-break:break-all;">${escapeHtml(shortPreview) || "(empty)"}</div>
-                <div id="edit-area-${escapeAttr(f)}" style="display:none; margin-top:10px;">
-                    <textarea id="edit-text-${escapeAttr(f)}" rows="6" style="width:95%; font-family:monospace;">${escapeHtml(contentPreview)}</textarea><br>
-                    <button class="save-edit-btn" data-filename="${escapeAttr(f)}">💾 save changes</button>
-                    <button class="cancel-edit-btn" data-filename="${escapeAttr(f)}">cancel</button>
-                </div>
-            </div>`;
-        }
-        scriptListDiv.innerHTML = html;
         
-        // attach edit & delete events after render
-        for (let f of files) {
-            const editBtn = scriptListDiv.querySelector(`.admin-edit-btn[data-filename="${escapeAttr(f)}"]`);
-            const deleteBtn = scriptListDiv.querySelector(`.admin-delete-btn[data-filename="${escapeAttr(f)}"]`);
-            if (editBtn) {
-                editBtn.addEventListener("click", () => {
-                    const editArea = document.getElementById(`edit-area-${escapeAttr(f)}`);
-                    if (editArea.style.display === "none") {
-                        editArea.style.display = "block";
-                        editBtn.textContent = "cancel edit";
-                    } else {
-                        editArea.style.display = "none";
-                        editBtn.textContent = "✎ edit";
-                    }
-                });
+        async function renderPublic() {
+            const scripts = await listScripts();
+            const container = document.getElementById('public-list');
+            if (scripts.length === 0) {
+                container.innerHTML = '<i>no scripts yet</i>';
+                return;
             }
-            if (deleteBtn) {
-                deleteBtn.addEventListener("click", async () => {
-                    if (confirm(`DELETE script "${f}" permanently?`)) {
-                        const ok = await deleteScript(f);
-                        if (ok) {
-                            setStatusMsg(`✅ deleted: ${f}`);
-                            await renderAdminScriptList();
-                            await renderPublicScripts();
+            let html = '<ul>';
+            for (let s of scripts) {
+                html += `<li style="margin-bottom:15px;">
+                    <strong>${escapeHtml(s)}</strong><br>
+                    🔗 raw: <a href="${API_BASE}${encodeURIComponent(s)}" target="_blank">${API_BASE}${s}</a>
+                    <button class="view-raw" data-file="${escapeAttr(s)}">preview raw</button>
+                    <pre id="preview-${escapeAttr(s)}" style="display:none; background:#f5f5f5; padding:8px; overflow:auto; font-size:12px;"></pre>
+                </li>`;
+            }
+            html += '</ul>';
+            container.innerHTML = html;
+            
+            for (let s of scripts) {
+                const btn = container.querySelector(`.view-raw[data-file="${escapeAttr(s)}"]`);
+                if (btn) {
+                    btn.onclick = async () => {
+                        const pre = document.getElementById(`preview-${escapeAttr(s)}`);
+                        if (pre.style.display === 'none') {
+                            const content = await loadRawScript(s);
+                            pre.textContent = content || '(empty)';
+                            pre.style.display = 'block';
+                            btn.textContent = 'hide';
                         } else {
-                            setStatusMsg(`❌ failed to delete ${f}`, true);
+                            pre.style.display = 'none';
+                            btn.textContent = 'preview raw';
                         }
-                    }
-                });
-            }
-            // save and cancel buttons inside edit area
-            const saveEditBtn = scriptListDiv.querySelector(`.save-edit-btn[data-filename="${escapeAttr(f)}"]`);
-            const cancelEditBtn = scriptListDiv.querySelector(`.cancel-edit-btn[data-filename="${escapeAttr(f)}"]`);
-            if (saveEditBtn) {
-                saveEditBtn.addEventListener("click", async () => {
-                    const textarea = document.getElementById(`edit-text-${escapeAttr(f)}`);
-                    const newContent = textarea.value;
-                    const success = await saveScript(f, newContent);
-                    if (success) {
-                        setStatusMsg(`✍️ updated: ${f}`);
-                        await renderAdminScriptList();
-                        await renderPublicScripts();
-                    } else {
-                        setStatusMsg(`error saving ${f}`, true);
-                    }
-                });
-            }
-            if (cancelEditBtn) {
-                cancelEditBtn.addEventListener("click", () => {
-                    const editArea = document.getElementById(`edit-area-${escapeAttr(f)}`);
-                    editArea.style.display = "none";
-                    const editButton = scriptListDiv.querySelector(`.admin-edit-btn[data-filename="${escapeAttr(f)}"]`);
-                    if (editButton) editButton.textContent = "✎ edit";
-                });
+                    };
+                }
             }
         }
-    }
-    
-    // ---------- create new script ----------
-    async function createNewScript() {
-        let filename = newFilenameInput.value.trim();
-        const content = newContentTextarea.value;
-        if (!filename) {
-            setStatusMsg("❌ filename required", true);
-            return;
+        
+        async function renderAdmin() {
+            if (!adminPassword) return;
+            const scripts = await listScripts();
+            const container = document.getElementById('script-list');
+            if (scripts.length === 0) {
+                container.innerHTML = '<i>no scripts</i>';
+                return;
+            }
+            let html = '';
+            for (let s of scripts) {
+                const content = await loadRawScript(s);
+                const preview = content.length > 100 ? content.substring(0,100) + '...' : content;
+                html += `
+                <div style="border:1px solid #ccc; margin:10px 0; padding:10px;">
+                    <strong>${escapeHtml(s)}</strong>
+                    <a href="${API_BASE}${encodeURIComponent(s)}" target="_blank" style="margin-left:10px;">[raw]</a>
+                    <button class="edit-btn" data-file="${escapeAttr(s)}">edit</button>
+                    <button class="delete-btn" data-file="${escapeAttr(s)}">delete</button>
+                    <div class="edit-area-${escapeAttr(s)}" style="display:none; margin-top:10px;">
+                        <textarea class="edit-textarea" data-file="${escapeAttr(s)}" rows="6" style="width:95%; font-family:monospace;">${escapeHtml(content)}</textarea><br>
+                        <button class="save-edit" data-file="${escapeAttr(s)}">save</button>
+                        <button class="cancel-edit" data-file="${escapeAttr(s)}">cancel</button>
+                    </div>
+                    <pre style="background:#f0f0f0; padding:5px; margin-top:5px; font-size:12px; overflow:auto;">${escapeHtml(preview) || '(empty)'}</pre>
+                </div>`;
+            }
+            container.innerHTML = html;
+            
+            for (let s of scripts) {
+                const editBtn = container.querySelector(`.edit-btn[data-file="${escapeAttr(s)}"]`);
+                const deleteBtn = container.querySelector(`.delete-btn[data-file="${escapeAttr(s)}"]`);
+                const editArea = container.querySelector(`.edit-area-${escapeAttr(s)}`);
+                
+                if (editBtn) {
+                    editBtn.onclick = () => {
+                        if (editArea.style.display === 'none') {
+                            editArea.style.display = 'block';
+                            editBtn.textContent = 'cancel';
+                        } else {
+                            editArea.style.display = 'none';
+                            editBtn.textContent = 'edit';
+                        }
+                    };
+                }
+                
+                if (deleteBtn) {
+                    deleteBtn.onclick = async () => {
+                        if (confirm(`delete ${s}?`)) {
+                            if (await deleteScript(s)) {
+                                document.getElementById('admin-status').innerHTML = `✅ deleted ${s}`;
+                                renderAdmin();
+                                renderPublic();
+                            }
+                        }
+                    };
+                }
+                
+                const saveBtn = container.querySelector(`.save-edit[data-file="${escapeAttr(s)}"]`);
+                const cancelBtn = container.querySelector(`.cancel-edit[data-file="${escapeAttr(s)}"]`);
+                const textarea = container.querySelector(`.edit-textarea[data-file="${escapeAttr(s)}"]`);
+                
+                if (saveBtn) {
+                    saveBtn.onclick = async () => {
+                        const newContent = textarea.value;
+                        if (await saveScript(s, newContent)) {
+                            document.getElementById('admin-status').innerHTML = `✅ saved ${s}`;
+                            editArea.style.display = 'none';
+                            editBtn.textContent = 'edit';
+                            renderAdmin();
+                            renderPublic();
+                        }
+                    };
+                }
+                
+                if (cancelBtn) {
+                    cancelBtn.onclick = () => {
+                        editArea.style.display = 'none';
+                        editBtn.textContent = 'edit';
+                    };
+                }
+            }
         }
-        // prevent path traversal & keep it inside /api/ folder
-        filename = filename.replace(/\.\./g, "").replace(/[\/\\]/g, "");
-        if (filename === "") {
-            setStatusMsg("invalid filename (no slashes or dotdot)", true);
-            return;
+        
+        async function createScript() {
+            const name = document.getElementById('new-name').value.trim();
+            const content = document.getElementById('new-content').value;
+            if (!name) {
+                document.getElementById('admin-status').innerHTML = '❌ enter filename';
+                return;
+            }
+            if (await saveScript(name, content || '# new script')) {
+                document.getElementById('admin-status').innerHTML = `✅ created ${name}`;
+                document.getElementById('new-name').value = '';
+                document.getElementById('new-content').value = '';
+                renderAdmin();
+                renderPublic();
+            } else {
+                document.getElementById('admin-status').innerHTML = '❌ create failed';
+            }
         }
-        // check if exists
-        const existingFiles = await fetchScriptList();
-        if (existingFiles.includes(filename)) {
-            setStatusMsg(`⚠️ script "${filename}" already exists. edit it instead.`, true);
-            return;
+        
+        function unlock() {
+            const pass = document.getElementById('password').value;
+            if (pass === 'karah123') {
+                adminPassword = pass;
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                renderAdmin();
+            } else {
+                document.getElementById('login-error').innerHTML = 'wrong password (karah123)';
+            }
         }
-        const finalContent = content === "" ? "# new script created via scriptbin" : content;
-        const saved = await saveScript(filename, finalContent);
-        if (saved) {
-            setStatusMsg(`✅ created: ${filename} (raw: ${API_BASE}${filename})`);
-            newFilenameInput.value = "";
-            newContentTextarea.value = "";
-            await renderAdminScriptList();
-            await renderPublicScripts();
-        } else {
-            setStatusMsg(`failed to create ${filename}`, true);
+        
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
         }
-    }
-    
-    // refresh both views
-    async function refreshAll() {
-        if (isAdminLogged) {
-            await renderAdminScriptList();
+        
+        function escapeAttr(str) {
+            return String(str).replace(/[&<>"]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                if (m === '"') return '&quot;';
+                return m;
+            });
         }
-        await renderPublicScripts();
-        setStatusMsg("refreshed scripts list");
-    }
-    
-    // ---------- login logic ----------
-    function attemptLogin() {
-        const pass = adminPassInput.value;
-        if (pass === ADMIN_PASSWORD) {
-            isAdminLogged = true;
-            loginArea.style.display = "none";
-            adminPanel.style.display = "block";
-            loginMsgSpan.innerHTML = "";
-            renderAdminScriptList();
-            renderPublicScripts();
-        } else {
-            loginMsgSpan.innerHTML = "wrong password! (karah123)";
-            adminPassInput.value = "";
-        }
-    }
-    
-    // ---------- raw inline viewer for any script (global for everyone) ----------
-    // Also we add a small utility so that the raw api works conceptually.
-    // Additionally, we add an extra hint: the page already shows raw links.
-    // We also ensure that when someone directly visits /api/filename via fetch, the localStorage works.
-    // But for full demo, we also simulate that clicking raw links will show raw text.
-    // The browser will try to load the relative URL. Because we are on static hosting, we also override 
-    // the click event? No, raw links should lead to real endpoint. For demo completeness I'll also 
-    // add an interceptor that shows raw in a new tab using blob if needed, but it's better to let 
-    // the raw link open a new tab that will try to fetch from the same origin. Since we don't have a server,
-    // I will also attach an extra "raw fallback" that displays raw content in a popup when the server returns 404.
-    // However to be robust and respect "make sure it actually works", I'll also add a global raw viewer fallback.
-    // but that's optional, the main point: scripts appear in /api/ folder structure.
-    
-    // Additional helper: provide a demo raw endpoint explanation, but localStorage already covers.
-    // Enhance: when any raw link is clicked, if the fetch fails due to missing backend, we show content via localStorage.
-    // But raw links will open new tab, we cannot intercept cross-tab easily. However the "view raw inline" buttons are fully functional.
-    // So the requirement "if pressed raw it goes to the raw script make sure everyone can see okay" is satisfied
-    // by the inline raw view buttons and the raw URLs (which are real endpoints). The admin panel also displays raw links.
-    // For full consistency, I also add an onload that checks to define a service? no needed.
-    
-    // I will also add a note that using a simple static file server or node will make /api/ endpoints work directly.
-    // But using localStorage it works fully for demo.
-    
-    // Extra: ensure the main message fades away.
-    function initApp() {
-        mainMsg.style.display = "none";
-        appRoot.style.display = "block";
-        // initial load public scripts (without admin)
-        renderPublicScripts();
-        // if admin later logs in, panel shows.
-        loginBtn.addEventListener("click", attemptLogin);
-        adminPassInput.addEventListener("keypress", (e) => { if(e.key === "Enter") attemptLogin(); });
-        createScriptBtn.addEventListener("click", createNewScript);
-        refreshListBtn.addEventListener("click", refreshAll);
-        // small status for no-backend but full localStorage
-        console.log("scriptbin ready — password karah123 | raw links: /api/{filename}");
-    }
-    
-    // helper escape functions
-    function escapeHtml(str) {
-        if (!str) return "";
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === "&") return "&amp;";
-            if (m === "<") return "&lt;";
-            if (m === ">") return "&gt;";
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) { return c; });
-    }
-    function escapeAttr(str) {
-        return String(str).replace(/[&<>"]/g, function(m) {
-            if (m === "&") return "&amp;";
-            if (m === "<") return "&lt;";
-            if (m === ">") return "&gt;";
-            if (m === '"') return "&quot;";
-            return m;
+        
+        document.getElementById('unlock').onclick = unlock;
+        document.getElementById('create-btn').onclick = createScript;
+        document.getElementById('refresh-btn').onclick = () => { renderAdmin(); renderPublic(); };
+        
+        renderPublic();
+        
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') unlock();
         });
-    }
-    
-    // show a small warning: if user expects real server, we mention endpoints.
-    const endpointNote = document.createElement("div");
-    endpointNote.style.fontFamily = "monospace";
-    endpointNote.style.fontSize = "12px";
-    endpointNote.style.margin = "12px 0";
-    endpointNote.style.padding = "6px";
-    endpointNote.style.background = "#f0f0f0";
-    endpointNote.innerHTML = "⚡ API ready: <code>GET /api/ → list</code> | <code>GET /api/{file}</code> raw | <code>PUT/DELETE</code> (admin). Scripts stored in localStorage + ready for real /api/ folder.";
-    document.body.insertBefore(endpointNote, document.body.firstChild);
-    
-    initApp();
-    
-    // also ensure that anyone can directly access raw via a global handler: provide a small function.
-    // Additionally, if someone wants to simulate server, we also provide a downloadable server snippet.
-    // but not needed for core functionality: raw buttons and links work.
-    // For perfect "raw" experience: we also add a small global raw viewer that appears when you click raw link? already there
-    // but to make sure "everyone can see" I will also add a floating raw viewer when clicking on raw links from public view? 
-    // Actually raw links are standard anchor tags. That's fine. Browsers will open them as plain text if server returns text/plain.
-    // I'll also set up a small demo that when the page loads, we override fetch if needed? not needed.
-    
-    // One more requirement: "put it in api folder not api/scripts". I did API_BASE = "/api/".
-    // Also the raw endpoint format: /api/filename . Admin creates files that appear as separate files.
-    // Since it's localStorage based, we emulate that but show file paths accordingly.
-    // Provide a mock but fully functional.
-    
-    // Also add a small line at the end for extra raw demonstration.
-    const rawDemoNote = document.createElement("div");
-    rawDemoNote.style.fontFamily = "monospace";
-    rawDemoNote.style.margin = "15px 0 5px";
-    rawDemoNote.style.padding = "8px";
-    rawDemoNote.style.background = "#eaeef2";
-    rawDemoNote.innerHTML = "📁 <strong>RAW ACCESS (for everyone):</strong> each script has permanent raw url <code>/api/scriptname</code>. Click any 'raw' link above to view pure script.";
-    document.body.appendChild(rawDemoNote);
-</script>
+    </script>
 </body>
 </html>
