@@ -2,723 +2,938 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Pastebin Control Panel · API Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="aHm-u6Lw7BRLde6l91yNdtVltbZu8np4hRcmCrn4iYI">
+    <meta name="google-adsense-account" content="ca-pub-4130246379396222">
+    <title>ScriptHub - Roblox Script Library</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', monospace;
-            padding: 2rem 1.5rem;
-            color: #eef2ff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
         }
 
-        .container {
+        /* Navbar */
+        .navbar {
+            background: #0f0f0f;
+            border-bottom: 1px solid #2a2a2a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
             max-width: 1400px;
             margin: 0 auto;
-        }
-
-        /* header panel */
-        .glass-panel {
-            background: rgba(18, 25, 45, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(72, 187, 255, 0.2);
-            border-radius: 2rem;
-            padding: 1.2rem 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
-        }
-
-        .flex-row {
+            padding: 1rem 2rem;
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
             gap: 1rem;
         }
 
-        h1 {
-            font-size: 1.9rem;
-            font-weight: 700;
-            background: linear-gradient(120deg, #7ac7ff, #f0b3ff);
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .badge {
-            background: #1e2a44;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #9ac8ff;
-            font-family: monospace;
-        }
-
-        .api-key-group {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .api-input {
-            background: #0f172f;
-            border: 1px solid #2d3a5e;
-            border-radius: 60px;
-            padding: 0.7rem 1.3rem;
-            font-family: monospace;
-            font-size: 0.85rem;
-            width: 320px;
-            color: white;
-        }
-
-        .api-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
-        }
-
-        button {
-            background: #2563eb;
-            border: none;
-            color: white;
-            font-weight: 600;
-            padding: 0.6rem 1.3rem;
-            border-radius: 40px;
             cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
 
-        button:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
+        .nav-links {
+            display: flex;
+            gap: 1rem;
         }
 
-        button.secondary {
-            background: #334155;
-        }
-        button.secondary:hover {
-            background: #475569;
-        }
-        button.warning {
-            background: #dc2626;
-        }
-        button.warning:hover {
-            background: #b91c1c;
-        }
-        button.outline {
+        .nav-links button {
             background: transparent;
-            border: 1px solid #3b82f6;
-            color: #90cdf4;
+            border: 1px solid #3a3a3a;
+            color: #e5e5e5;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .grid-2col {
+        .nav-links button:hover {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Three column layout */
+        .three-columns {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.8rem;
+            grid-template-columns: 180px 1fr 180px;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .three-columns {
+                grid-template-columns: 1fr;
+            }
+            .left-sidebar, .right-sidebar {
+                display: none;
+            }
+        }
+
+        /* Sidebar ads */
+        .left-sidebar, .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .ad-box {
+            background: #121212;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .ad-label {
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main content */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #1a1a2e, #0f0f23);
+            border-radius: 30px;
             margin-bottom: 2rem;
         }
 
-        .card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(4px);
-            border-radius: 1.5rem;
-            padding: 1.6rem;
-            border: 1px solid #1e2a44;
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #a78bfa, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .instructions-card {
+            background: #121212;
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2a2a2a;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: #2a2a2a;
+            border: 1px solid #4a4a4a;
+            color: #e5e5e5;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .card h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.2rem;
-            border-left: 4px solid #3b82f6;
-            padding-left: 0.8rem;
+        .btn-secondary:hover {
+            background: #3a3a3a;
+        }
+
+        /* Search section */
+        .search-section {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            border-radius: 60px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .filters {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             gap: 0.5rem;
         }
 
-        .form-group {
-            margin-bottom: 1.2rem;
+        .filter-btn {
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            color: #a3a3a3;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        label {
-            font-weight: 500;
-            font-size: 0.8rem;
-            display: block;
-            margin-bottom: 0.3rem;
-            color: #b9c7e0;
+        .filter-btn.active {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+            color: white;
         }
 
-        input, textarea, select {
+        /* Scripts grid */
+        .scripts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .script-card {
+            background: #121212;
+            border: 1px solid #2a2a2a;
+            border-radius: 20px;
+            padding: 1.2rem;
+            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .script-card:hover {
+            transform: translateY(-4px);
+            border-color: #8b5cf6;
+        }
+
+        .script-thumbnail {
             width: 100%;
-            background: #0a0f1c;
-            border: 1px solid #2d3a5e;
-            border-radius: 1rem;
-            padding: 0.7rem 1rem;
-            color: #f1f5f9;
-            font-family: inherit;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
         }
 
-        textarea {
-            min-height: 110px;
-            resize: vertical;
+        .script-type {
+            font-size: 0.7rem;
+            color: #a78bfa;
+            background: #2a1a4a;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
         }
 
-        .paste-list {
-            max-height: 460px;
-            overflow-y: auto;
+        .script-card h3 {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+
+        .script-meta {
+            font-size: 0.75rem;
+            color: #888;
+            margin: 0.5rem 0;
+        }
+
+        .script-description {
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.4;
+            margin: 0.5rem 0;
+        }
+
+        .script-footer {
             margin-top: 1rem;
         }
 
-        .paste-item {
-            background: #0f172f;
-            border-radius: 1rem;
-            padding: 0.9rem;
-            margin-bottom: 0.8rem;
-            border-left: 3px solid #3b82f6;
-            transition: 0.1s;
+        /* Script detail */
+        .script-detail {
+            background: #121212;
+            border-radius: 24px;
+            padding: 2rem;
         }
 
-        .paste-title {
-            font-weight: 700;
-            font-size: 0.95rem;
+        .script-detail pre {
+            background: #0a0a0a;
+            padding: 1rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-size: 0.8rem;
+            font-family: monospace;
+            border: 1px solid #2a2a2a;
+        }
+
+        .script-detail code {
+            white-space: pre-wrap;
             word-break: break-word;
         }
 
-        .paste-meta {
-            font-size: 0.7rem;
-            color: #8ca3cf;
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #888;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 1rem;
+        }
+
+        /* Pagination */
+        .pagination {
             display: flex;
+            justify-content: center;
             gap: 1rem;
-            margin-top: 0.3rem;
-            flex-wrap: wrap;
+            margin-top: 2rem;
         }
 
-        .actions {
-            margin-top: 0.7rem;
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-sm {
-            padding: 0.25rem 0.8rem;
-            font-size: 0.7rem;
-            border-radius: 30px;
-        }
-
-        .status {
-            background: #0f172f;
-            border-radius: 1rem;
-            padding: 0.6rem 1rem;
-            font-size: 0.8rem;
-            font-family: monospace;
+        /* Horizontal ad */
+        .horizontal-ad {
             margin-top: 1rem;
-            border: 1px solid #1e2a44;
+            text-align: center;
         }
 
-        .error-status {
-            color: #fca5a5;
-            background: #3b0f1a;
-            border-color: #ef4444;
-        }
-
-        .success-status {
-            color: #bef264;
-            background: #0f2a1a;
-            border-color: #4ade80;
-        }
-
-        hr {
-            margin: 0.8rem 0;
-            border-color: #1e2a44;
-        }
-
-        @media (max-width: 780px) {
-            .grid-2col {
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .scripts-grid {
                 grid-template-columns: 1fr;
             }
-            .api-input {
-                width: 100%;
-            }
         }
 
-        .raw-link {
-            cursor: pointer;
-            text-decoration: underline;
-            color: #7aaef0;
-        }
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172f;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 10px;
+        footer a {
+            color: #666;
+            text-decoration: none;
         }
     </style>
+    
+    <!-- Linkvertise Monetization Script - Updated -->
+    <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
+    <script>
+        linkvertise(4752730, {
+            whitelist: [
+                "https://rblxscripts2.vercel.app/?id=69cfb7c84d82cd3c779d6525",
+                "https://rblxscripts2.vercel.app/",
+                "https://rblxscripts2.vercel.app/key.html",
+                "https://pqstefy.vercel.app/",
+                ""
+            ], 
+            blacklist: []
+        });
+    </script>
+    
+    <!-- Additional ad scripts -->
+    <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1251105"></script>
+    <script src="https://theoreticalassertshame.com/3d/f2/ae/3df2ae10ef8df3ee78e9f80c1287a09c.js"></script>
+    <script async="async" data-cfasync="false" src="https://theoreticalassertshame.com/b90454a4e93508bbbd6a0d811d5605d4/invoke.js"></script>
+    <script src="https://pl29027395.profitablecpmratenetwork.com/3d/f2/ae/3df2ae10ef8df3ee78e9f80c1287a09c.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="glass-panel">
-        <div class="flex-row">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <h1>📦 Pastebin Commander</h1>
-                <div class="badge">API · dev control</div>
-            </div>
-            <div class="api-key-group">
-                <input type="text" id="devKeyInput" class="api-input" placeholder="Pastebin API Developer Key" value="S9nW5ShpEL_lZp5mvCJKb-55IzEfNyKi">
-                <button id="saveDevKeyBtn">🔑 Set Key</button>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showHome()">🎮 ScriptHub</div>
+            <div class="nav-links">
+                <button onclick="showHome()">Home</button>
+                <button onclick="window.location.href='/key.html'">🔑 Keys</button>
             </div>
         </div>
-        <div class="flex-row" style="margin-top: 1rem; justify-content: flex-start; gap: 1rem;">
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <span style="font-size: 0.75rem;">👤 User Session Key (optional):</span>
-                <input type="text" id="userKeyInput" class="api-input" placeholder="api_user_key (login via member)" style="width: 260px;">
-                <button id="loginViaFormBtn" class="secondary btn-sm">🔐 Get user key</button>
-            </div>
-        </div>
-    </div>
+    </nav>
 
-    <div class="grid-2col">
-        <!-- LEFT: create / delete / user key generator -->
-        <div class="card">
-            <h2>✍️ Create / Manage Paste</h2>
-            <div class="form-group">
-                <label>Paste Key (for delete only)</label>
-                <input type="text" id="pasteKeyField" placeholder="e.g., UIFdu235s (only needed for delete)">
-            </div>
-            <div class="form-group">
-                <label>📌 Title / Name</label>
-                <input type="text" id="pasteTitle" placeholder="My awesome snippet">
-            </div>
-            <div class="form-group">
-                <label>📝 Content *</label>
-                <textarea id="pasteCode" placeholder="Paste your code, notes, logs..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>🔒 Visibility</label>
-                <select id="pastePrivate">
-                    <option value="0">🌍 Public (0)</option>
-                    <option value="1" selected>👁️ Unlisted (1)</option>
-                    <option value="2">🔐 Private (2) — requires user_key</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>⏳ Expiration</label>
-                <select id="pasteExpire">
-                    <option value="N">Never</option>
-                    <option value="10M">10 Minutes</option>
-                    <option value="1H">1 Hour</option>
-                    <option value="1D">1 Day</option>
-                    <option value="1W">1 Week</option>
-                    <option value="2W">2 Weeks</option>
-                    <option value="1M">1 Month</option>
-                    <option value="6M">6 Months</option>
-                    <option value="1Y">1 Year</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>🎨 Syntax Highlighting (format)</label>
-                <select id="pasteFormat">
-                    <option value="text">Plain Text</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="python">Python</option>
-                    <option value="php">PHP</option>
-                    <option value="java">Java</option>
-                    <option value="csharp">C#</option>
-                    <option value="cpp">C++</option>
-                    <option value="html5">HTML5</option>
-                    <option value="css">CSS</option>
-                    <option value="go">Go</option>
-                    <option value="ruby">Ruby</option>
-                    <option value="json">JSON</option>
-                    <option value="sql">SQL</option>
-                </select>
-            </div>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                <button id="createPasteBtn">✨ Create New Paste</button>
-                <button id="deletePasteBtn" class="warning">🗑️ Delete Paste</button>
-            </div>
-            <div id="actionStatus" class="status">💡 Ready — use your dev key</div>
-        </div>
-
-        <!-- RIGHT: list pastes / user info / raw fetch -->
-        <div class="card">
-            <h2>📋 Account & Pastes</h2>
-            <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                <button id="listPastesBtn">📄 List My Pastes</button>
-                <button id="getUserDetailsBtn" class="secondary">👤 User Info</button>
-                <button id="fetchRawFromKeyBtn" class="outline">🔗 Fetch Raw (by key)</button>
-            </div>
-            <div class="form-group" style="margin-top: 0;">
-                <label>🔎 Get raw paste by key:</label>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="rawPasteKeyInput" placeholder="paste key e.g. abc123" style="flex:1">
-                    <button id="loadRawBtn" class="secondary btn-sm">Load Raw</button>
+    <div class="container">
+        <div class="three-columns">
+            <!-- LEFT SIDEBAR ADS -->
+            <div class="left-sidebar">
+                <div class="ad-box">
+                    <div class="ad-label">Advertisement</div>
+                    <div style="background:#1a1a1a; height:250px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                        <span style="color:#666;">Ad Space</span>
+                    </div>
+                </div>
+                <div class="ad-box">
+                    <div class="ad-label">Sponsored</div>
+                    <div style="background:#1a1a1a; height:400px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                        <span style="color:#666;">Ad Space</span>
+                    </div>
+                </div>
+                <div class="ad-box">
+                    <div class="ad-label">Native Banner</div>
+                    <div id="container-b90454a4e93508bbbd6a0d811d5605d4" style="background:#1a1a1a; height:200px; display:flex; align-items:center; justify-content:center;">
+                        <span style="color:#666;">Native Ad</span>
+                    </div>
                 </div>
             </div>
-            <div id="pastesListContainer" class="paste-list">
-                <div class="status">⚡ Click "List My Pastes" (requires user_key)</div>
+
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div id="homePage">
+                    <div class="hero">
+                        <h1>Roblox Script Hub</h1>
+                        <p>Discover, share, and use the best Roblox scripts</p>
+                    </div>
+                    
+                    <!-- INSTRUCTIONS SECTION -->
+                    <div id="instructionsSection" class="instructions-card">
+                        <div style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); border-radius: 20px; padding: 2rem; color: white; text-align: center;">
+                            <h2>📋 Welcome to ScriptHub!</h2>
+                            <p style="margin: 1rem 0;">To access scripts, please complete these simple steps:</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
+                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
+                                    <span style="font-size: 2rem;">1️⃣</span>
+                                    <p>Disable Ad Blocker</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
+                                    <span style="font-size: 2rem;">2️⃣</span>
+                                    <p>Wait 10 seconds</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
+                                    <span style="font-size: 2rem;">3️⃣</span>
+                                    <p>Click "I Understand"</p>
+                                </div>
+                            </div>
+                            <button id="completeInstructionsBtn" class="btn-primary" onclick="completeInstructions()" style="background: white; color: #8b5cf6;">✅ I Understand - Show Scripts</button>
+                        </div>
+                    </div>
+
+                    <!-- SCRIPTS SECTION - Local demo data -->
+                    <div id="scriptsSection" style="display: none;">
+                        <div class="search-section">
+                            <input type="text" id="searchInput" placeholder="🔍 Search scripts..." class="search-input">
+                            <div class="filters">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="noKey">No Key System</button>
+                                <button class="filter-btn" data-filter="mobile">Mobile Ready</button>
+                                <button class="filter-btn" data-filter="free">Free Scripts</button>
+                                <button class="filter-btn" data-filter="verified">Verified Only</button>
+                            </div>
+                        </div>
+
+                        <div id="scriptsGrid" class="scripts-grid">
+                            <div class="loading">Loading scripts...</div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div id="pagination" class="pagination">
+                            <button id="prevBtn" class="btn-secondary" onclick="prevPage()" style="display: none;">← Previous</button>
+                            <span id="pageInfo" style="color: #a3a3a3; padding: 10px;"></span>
+                            <button id="nextBtn" class="btn-secondary" onclick="nextPage()" style="display: none;">Next →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Script Detail Page -->
+                <div id="detailPage" class="hidden">
+                    <div id="scriptContent"></div>
+                    <div class="horizontal-ad" style="margin-top: 2rem;">
+                        <div class="ad-label">Advertisement</div>
+                        <div style="background:#1a1a1a; height:90px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                            <span style="color:#666;">Ad Space - 728x90</span>
+                        </div>
+                    </div>
+                    <div class="horizontal-ad" style="margin-top: 1rem;">
+                        <div class="ad-label">Recommended</div>
+                        <div style="background:#1a1a1a; height:250px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                            <span style="color:#666;">Ad Space - 300x250</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="userInfoBlock" class="status" style="margin-top: 0.8rem;">📌 No user data loaded</div>
+
+            <!-- RIGHT SIDEBAR ADS -->
+            <div class="right-sidebar">
+                <div class="ad-box">
+                    <div class="ad-label">Sponsored</div>
+                    <div style="background:#1a1a1a; height:300px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                        <span style="color:#666;">Ad Space</span>
+                    </div>
+                </div>
+                <div class="ad-box">
+                    <div class="ad-label">Recommended</div>
+                    <div style="background:#1a1a1a; height:250px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                        <span style="color:#666;">Ad Space</span>
+                    </div>
+                </div>
+                <div class="ad-box">
+                    <div class="ad-label">Network Ad</div>
+                    <div style="background:#1a1a1a; height:60px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                        <span style="color:#666;">Ad Space - 468x60</span>
+                    </div>
+                </div>
+                <div class="ad-box">
+                    <div class="ad-label">Large Ad</div>
+                    <div style="background:#1a1a1a; height:600px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                        <span style="color:#666;">Ad Space - 160x600</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    // ---------- CONFIGURATION ----------
-    const PASTEBIN_API_POST = 'https://pastebin.com/api/api_post.php';
-    const PASTEBIN_API_LOGIN = 'https://pastebin.com/api/api_login.php';
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #2a2a2a; background: #0f0f0f;">
+        <a href="https://theoreticalassertshame.com/cf2pmntd4?key=58419b4b69181e2cbecd321ed95c7cb8" target="_blank" rel="nofollow noopener" style="color: #666; text-decoration: none; font-size: 12px;">Ads by TheoreticalAssertShame</a>
+    </footer>
 
-    let currentDevKey = localStorage.getItem('pastebin_dev_key') || 'S9nW5ShpEL_lZp5mvCJKb-55IzEfNyKi';
-    let currentUserKey = localStorage.getItem('pastebin_user_key') || '';
+    <div id="linkModal" class="modal">
+        <div class="modal-content">
+            <h3>⚠️ External Link</h3>
+            <p>You are about to leave ScriptHub.</p>
+            <p id="externalLinkUrl" style="word-break:break-all;"></p>
+            <div style="display:flex; gap:1rem; margin-top:1rem;">
+                <button onclick="closeModal()" class="btn-secondary">Cancel</button>
+                <button onclick="visitLink()" class="btn-primary">Continue →</button>
+            </div>
+        </div>
+    </div>
 
-    // DOM elements
-    const devKeyInput = document.getElementById('devKeyInput');
-    const userKeyInput = document.getElementById('userKeyInput');
-    const saveDevBtn = document.getElementById('saveDevKeyBtn');
-    const loginFormBtn = document.getElementById('loginViaFormBtn');
-    const createBtn = document.getElementById('createPasteBtn');
-    const deleteBtn = document.getElementById('deletePasteBtn');
-    const listBtn = document.getElementById('listPastesBtn');
-    const userDetailsBtn = document.getElementById('getUserDetailsBtn');
-    const loadRawBtn = document.getElementById('loadRawBtn');
-    const fetchRawByKeyBtn = document.getElementById('fetchRawFromKeyBtn');
-    const rawPasteKeyInput = document.getElementById('rawPasteKeyInput');
-    const actionStatusDiv = document.getElementById('actionStatus');
-    const pastesContainer = document.getElementById('pastesListContainer');
-    const userInfoBlock = document.getElementById('userInfoBlock');
-
-    // init inputs
-    devKeyInput.value = currentDevKey;
-    userKeyInput.value = currentUserKey;
-
-    function setActionStatus(msg, isError = false) {
-        actionStatusDiv.innerText = msg;
-        actionStatusDiv.className = `status ${isError ? 'error-status' : 'success-status'}`;
-        setTimeout(() => {
-            if (actionStatusDiv.innerText === msg) {
-                actionStatusDiv.className = 'status';
+    <!-- Social Bar and Popunder -->
+    <script src="https://theoreticalassertshame.com/22/bd/15/22bd15cffb30179ea9161453db7a28a8.js"></script>
+    
+    <script>
+        // LOCAL DEMO SCRIPTS - No external API calls, just for testing
+        const DEMO_SCRIPTS = [
+            {
+                _id: "1",
+                title: "Blox Fruits Auto Farm",
+                description: "Complete auto farm script for Blox Fruits. Supports all fruits, auto collecting, and more.",
+                user: { username: "ScriptMaster" },
+                views: 15420,
+                likes: 342,
+                paid: false,
+                keySystem: false,
+                mobileReady: true,
+                image: null,
+                game: { title: "Blox Fruits", gameLink: "https://roblox.com/games/2753915549" },
+                testedExecutors: [{ title: "Krnl" }, { title: "Synapse X" }],
+                rawScript: "-- Blox Fruits Auto Farm Script\n-- Works with most executors\nloadstring(game:HttpGet('https://example.com/script.lua'))()"
+            },
+            {
+                _id: "2",
+                title: "Pet Simulator 99 Auto Farm",
+                description: "Best auto farm script for Pet Simulator 99. Auto hatch, auto collect, auto rank up.",
+                user: { username: "PetKing" },
+                views: 8920,
+                likes: 178,
+                paid: false,
+                keySystem: true,
+                mobileReady: false,
+                image: null,
+                game: { title: "Pet Simulator 99", gameLink: "https://roblox.com/games/13488798954" },
+                testedExecutors: [{ title: "ScriptWare" }, { title: "Fluxus" }],
+                rawScript: "-- Pet Simulator 99 Script\n-- Key required\n-- Get key from linkvertise"
+            },
+            {
+                _id: "3",
+                title: "Arsenal Aimbot & ESP",
+                description: "Undetected aimbot and ESP for Arsenal. Silent aim, trigger bot, and more.",
+                user: { username: "ArsenalCheats" },
+                views: 23410,
+                likes: 567,
+                paid: true,
+                keySystem: false,
+                mobileReady: false,
+                image: null,
+                game: { title: "Arsenal", gameLink: "https://roblox.com/games/286090429" },
+                testedExecutors: [{ title: "Synapse X" }, { title: "ScriptWare" }],
+                rawScript: "-- Arsenal Aimbot Script\n-- Paid version\n-- Contact @ArsenalCheats on Discord"
+            },
+            {
+                _id: "4",
+                title: "King Legacy Auto Farm",
+                description: "Complete auto farm for King Legacy. Auto fruit, auto raid, auto sea beast.",
+                user: { username: "LegacyDev" },
+                views: 6300,
+                likes: 94,
+                paid: false,
+                keySystem: false,
+                mobileReady: true,
+                image: null,
+                game: { title: "King Legacy", gameLink: "https://roblox.com/games/4520749081" },
+                testedExecutors: [{ title: "Krnl" }, { title: "Fluxus" }],
+                rawScript: "-- King Legacy Auto Farm\n-- loadstring(game:HttpGet('https://pastebin.com/raw/xxx'))()"
+            },
+            {
+                _id: "5",
+                title: "Anime Adventures Meta Units",
+                description: "Get all meta units, infinite gems, auto battle script.",
+                user: { username: "AnimeGod" },
+                views: 11200,
+                likes: 289,
+                paid: false,
+                keySystem: true,
+                mobileReady: false,
+                image: null,
+                game: { title: "Anime Adventures", gameLink: "https://roblox.com/games/8616833801" },
+                testedExecutors: [{ title: "Synapse X" }],
+                rawScript: "-- Anime Adventures Script\n-- Key system active\n-- Complete linkvertise to unlock"
+            },
+            {
+                _id: "6",
+                title: "Blade Ball Auto Parry",
+                description: "Auto parry, auto aim, and ability spam for Blade Ball.",
+                user: { username: "BladeMaster" },
+                views: 18750,
+                likes: 421,
+                paid: false,
+                keySystem: false,
+                mobileReady: true,
+                image: null,
+                game: { title: "Blade Ball", gameLink: "https://roblox.com/games/13772394625" },
+                testedExecutors: [{ title: "Krnl" }, { title: "ScriptWare" }, { title: "Fluxus" }],
+                rawScript: "-- Blade Ball Auto Parry\nloadstring(game:HttpGet('https://example.com/bladeball.lua'))()"
             }
-        }, 4500);
-    }
+        ];
 
-    function setUserInfoMessage(msg, isError = false) {
-        userInfoBlock.innerText = msg;
-        userInfoBlock.className = `status ${isError ? 'error-status' : 'success-status'}`;
-    }
-
-    // generic api_post request
-    async function callPastebinAPI(postData) {
-        try {
-            const formBody = new URLSearchParams(postData).toString();
-            const response = await fetch(PASTEBIN_API_POST, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formBody
-            });
-            const text = await response.text();
-            if (text.startsWith('Bad API request') || text.includes('Bad API')) {
-                throw new Error(text.substring(0, 200));
+        let currentScripts = [];
+        let currentPage = 1;
+        let maxPages = 1;
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let itemsPerPage = 6;
+        
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.background = isError ? '#dc2626' : '#10b981';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function scrollToScripts() {
+            const scriptsSection = document.getElementById('scriptsSection');
+            if (scriptsSection && scriptsSection.style.display !== 'none') {
+                scriptsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-            return { ok: true, data: text };
-        } catch (err) {
-            return { ok: false, error: err.message };
         }
-    }
-
-    // login & get user key
-    async function fetchUserKey(username, password) {
-        if (!currentDevKey) throw new Error('Dev key missing');
-        const formData = {
-            api_dev_key: currentDevKey,
-            api_user_name: username,
-            api_user_password: password
-        };
-        const body = new URLSearchParams(formData).toString();
-        try {
-            const res = await fetch(PASTEBIN_API_LOGIN, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: body
-            });
-            const key = await res.text();
-            if (key.includes('Bad API request') || key.includes('invalid')) {
-                throw new Error(key);
+        
+        function checkInstructionsCompleted() {
+            const completed = localStorage.getItem('instructionsCompleted');
+            if (completed === 'true') {
+                document.getElementById('instructionsSection').style.display = 'none';
+                document.getElementById('scriptsSection').style.display = 'block';
+                loadScripts();
+                setTimeout(scrollToScripts, 500);
+            } else {
+                document.getElementById('instructionsSection').style.display = 'block';
+                document.getElementById('scriptsSection').style.display = 'none';
             }
-            if (key.length >= 16) return key.trim();
-            throw new Error('Invalid response: ' + key);
-        } catch (err) {
-            throw new Error(`Login failed: ${err.message}`);
         }
-    }
-
-    // create paste
-    async function createPaste() {
-        if (!currentDevKey) { setActionStatus('❌ Set Developer API Key first', true); return; }
-        const pasteCode = document.getElementById('pasteCode').value.trim();
-        if (!pasteCode) { setActionStatus('❌ Paste content cannot be empty', true); return; }
-        const title = document.getElementById('pasteTitle').value.trim() || 'Untitled';
-        const privacy = document.getElementById('pastePrivate').value;
-        const expire = document.getElementById('pasteExpire').value;
-        const format = document.getElementById('pasteFormat').value;
-        const userKey = currentUserKey || '';
-
-        const params = {
-            api_dev_key: currentDevKey,
-            api_option: 'paste',
-            api_paste_code: pasteCode,
-            api_paste_name: title,
-            api_paste_private: privacy,
-            api_paste_expire_date: expire,
-            api_paste_format: format,
-        };
-        if (userKey) params.api_user_key = userKey;
-
-        const result = await callPastebinAPI(params);
-        if (result.ok && result.data && (result.data.startsWith('https://pastebin.com/') || result.data.includes('pastebin.com'))) {
-            setActionStatus(`✅ Paste created! URL: ${result.data}`, false);
-            document.getElementById('pasteCode').value = '';
-            document.getElementById('pasteTitle').value = '';
-            // refresh list if user key exists
-            if (currentUserKey) await listPastes();
-        } else {
-            setActionStatus(`❌ Create failed: ${result.data || result.error}`, true);
+        
+        function completeInstructions() {
+            localStorage.setItem('instructionsCompleted', 'true');
+            document.getElementById('instructionsSection').style.display = 'none';
+            document.getElementById('scriptsSection').style.display = 'block';
+            loadScripts();
+            showToast('✅ Thanks! Scripts are now available.');
+            setTimeout(scrollToScripts, 500);
         }
-    }
-
-    // delete paste
-    async function deletePaste() {
-        const pasteKey = document.getElementById('pasteKeyField').value.trim();
-        if (!pasteKey) { setActionStatus('⚠️ Enter Paste Key to delete', true); return; }
-        if (!currentDevKey) { setActionStatus('Dev key missing', true); return; }
-        if (!currentUserKey) { setActionStatus('User session key required for deletion (login)', true); return; }
-        const params = {
-            api_dev_key: currentDevKey,
-            api_user_key: currentUserKey,
-            api_option: 'delete',
-            api_paste_key: pasteKey
-        };
-        const result = await callPastebinAPI(params);
-        if (result.ok && result.data.includes('Paste Removed')) {
-            setActionStatus(`🗑️ Paste "${pasteKey}" removed successfully`, false);
-            document.getElementById('pasteKeyField').value = '';
-            await listPastes();
-        } else {
-            setActionStatus(`Delete error: ${result.data || result.error}`, true);
+        
+        function showHome() {
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('detailPage').classList.add('hidden');
+            window.history.pushState({}, '', '/');
+            currentPage = 1;
+            if (localStorage.getItem('instructionsCompleted') === 'true') {
+                loadScripts();
+                setTimeout(scrollToScripts, 500);
+            }
         }
-    }
-
-    // list pastes (requires user_key)
-    async function listPastes(limit = 50) {
-        if (!currentDevKey) { setActionStatus('Dev key required', true); return; }
-        if (!currentUserKey) { 
-            pastesContainer.innerHTML = '<div class="status">🔐 Please obtain and set a User Session Key (via login) to list pastes</div>';
-            setActionStatus('Missing api_user_key, use login form', true);
-            return;
+        
+        function showDetail(id) {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('detailPage').classList.remove('hidden');
+            window.history.pushState({}, '', `/?id=${id}`);
+            loadScriptDetail(id);
         }
-        const params = {
-            api_dev_key: currentDevKey,
-            api_user_key: currentUserKey,
-            api_option: 'list',
-            api_results_limit: Math.min(limit, 100)
-        };
-        const result = await callPastebinAPI(params);
-        if (!result.ok) {
-            pastesContainer.innerHTML = `<div class="status error-status">❌ Failed: ${result.error}</div>`;
-            return;
+        
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadScripts();
+                setTimeout(scrollToScripts, 300);
+            }
         }
-        const xmlText = result.data;
-        if (xmlText.includes('No pastes found')) {
-            pastesContainer.innerHTML = '<div class="status">📭 No pastes found for this user.</div>';
-            return;
+        
+        function nextPage() {
+            if (currentPage < maxPages) {
+                currentPage++;
+                loadScripts();
+                setTimeout(scrollToScripts, 300);
+            }
         }
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-        const pastes = xmlDoc.querySelectorAll('paste');
-        if (pastes.length === 0) {
-            pastesContainer.innerHTML = '<div class="status">📭 No pastes or invalid XML.</div>';
-            return;
+        
+        function loadScripts() {
+            const grid = document.getElementById('scriptsGrid');
+            grid.innerHTML = '<div class="loading">Loading scripts...</div>';
+            
+            // Filter scripts
+            let filtered = [...DEMO_SCRIPTS];
+            
+            if (currentFilter === 'noKey') {
+                filtered = filtered.filter(s => !s.keySystem);
+            } else if (currentFilter === 'mobile') {
+                filtered = filtered.filter(s => s.mobileReady);
+            } else if (currentFilter === 'free') {
+                filtered = filtered.filter(s => !s.paid);
+            } else if (currentFilter === 'verified') {
+                filtered = filtered.filter(s => s.views > 5000);
+            }
+            
+            if (currentSearch) {
+                const searchLower = currentSearch.toLowerCase();
+                filtered = filtered.filter(s => 
+                    s.title.toLowerCase().includes(searchLower) || 
+                    s.description.toLowerCase().includes(searchLower) ||
+                    s.user.username.toLowerCase().includes(searchLower)
+                );
+            }
+            
+            currentScripts = filtered;
+            maxPages = Math.ceil(currentScripts.length / itemsPerPage);
+            
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageInfo = document.getElementById('pageInfo');
+            
+            if (maxPages > 1) {
+                prevBtn.style.display = currentPage > 1 ? 'inline-block' : 'none';
+                nextBtn.style.display = currentPage < maxPages ? 'inline-block' : 'none';
+                pageInfo.textContent = `Page ${currentPage} of ${maxPages}`;
+            } else {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+                pageInfo.textContent = '';
+            }
+            
+            displayScripts();
         }
-        let html = '';
-        pastes.forEach(paste => {
-            const key = paste.querySelector('paste_key')?.textContent || '?';
-            const title = paste.querySelector('paste_title')?.textContent || 'Untitled';
-            const date = paste.querySelector('paste_date')?.textContent;
-            const dateStr = date ? new Date(parseInt(date) * 1000).toLocaleString() : 'unknown';
-            const size = paste.querySelector('paste_size')?.textContent || '0';
-            const url = paste.querySelector('paste_url')?.textContent || '#';
-            const hits = paste.querySelector('paste_hits')?.textContent || '0';
-            const privacyVal = paste.querySelector('paste_private')?.textContent;
-            const privacyLabel = privacyVal === '0' ? 'Public' : (privacyVal === '1' ? 'Unlisted' : 'Private');
-            html += `
-                <div class="paste-item">
-                    <div class="paste-title">📄 ${escapeHtml(title)} <span style="opacity:0.7;">[${escapeHtml(key)}]</span></div>
-                    <div class="paste-meta">
-                        <span>📅 ${escapeHtml(dateStr)}</span>
-                        <span>🔒 ${escapeHtml(privacyLabel)}</span>
-                        <span>👁️ ${escapeHtml(hits)} hits</span>
-                        <span>📦 ${escapeHtml(size)} chars</span>
+        
+        function displayScripts() {
+            const grid = document.getElementById('scriptsGrid');
+            
+            if (!currentScripts || currentScripts.length === 0) {
+                grid.innerHTML = '<div class="loading">No scripts found.</div>';
+                return;
+            }
+            
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageScripts = currentScripts.slice(start, end);
+            
+            grid.innerHTML = pageScripts.map(script => `
+                <div class="script-card" onclick="showDetail('${script._id}')">
+                    <span class="script-type">${script.keySystem ? '🔑 Key System' : '🔓 No Key'} | ${script.mobileReady ? '📱 Mobile' : '💻 PC'}</span>
+                    <h3>${escapeHtml(script.title)}</h3>
+                    <div class="script-meta">
+                        👤 ${escapeHtml(script.user.username)} • 👁️ ${script.views.toLocaleString()} views
+                        ${script.paid ? ' 💰 Paid' : ' 🆓 Free'}
                     </div>
-                    <div class="actions">
-                        <button class="btn-sm raw-action" data-key="${escapeHtml(key)}">📄 Raw</button>
-                        <button class="btn-sm delete-action" data-key="${escapeHtml(key)}">🗑️ Delete</button>
-                        <a href="${escapeHtml(url)}" target="_blank" class="btn-sm" style="background:#334155; text-decoration:none; display:inline-block; padding:4px 10px; border-radius:30px;">🔗 Open</a>
+                    <div class="script-description">${escapeHtml(script.description.substring(0, 120))}...</div>
+                    <div class="script-footer">
+                        <button onclick="event.stopPropagation(); showDetail('${script._id}')" class="btn-secondary">View Script →</button>
                     </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadScriptDetail(id) {
+            const contentDiv = document.getElementById('scriptContent');
+            contentDiv.innerHTML = '<div class="loading">Loading script...</div>';
+            
+            const script = DEMO_SCRIPTS.find(s => s._id === id);
+            
+            if (!script) {
+                showToast('Script not found. Redirecting to home...', true);
+                setTimeout(() => showHome(), 2000);
+                return;
+            }
+            
+            contentDiv.innerHTML = `
+                <div class="script-detail">
+                    <button onclick="showHome()" class="btn-secondary" style="margin-bottom:1rem;">← Back to Home</button>
+                    
+                    <h1>${escapeHtml(script.title)}</h1>
+                    <div class="script-meta">
+                        👤 ${escapeHtml(script.user.username)} • 👁️ ${script.views.toLocaleString()} views
+                        ${script.likes ? `❤️ ${script.likes}` : ''}
+                        ${script.paid ? '💰 Paid' : '🆓 Free'} • ${script.keySystem ? '🔑 Has Key System' : '🔓 No Key System'}
+                    </div>
+                    
+                    <p><strong>Game:</strong> <a href="${script.game.gameLink}" target="_blank">${escapeHtml(script.game.title)}</a></p>
+                    <p><strong>Description:</strong> ${escapeHtml(script.description)}</p>
+                    
+                    <div style="margin-top: 1rem;">
+                        <h3>📝 Script Code:</h3>
+                        <pre><code id="scriptCode">${escapeHtml(script.rawScript)}</code></pre>
+                        <button onclick="copyCode()" class="btn-primary" style="margin-top:1rem;">📋 Copy Code</button>
+                    </div>
+                    
+                    ${script.testedExecutors && script.testedExecutors.length > 0 ? `
+                        <div style="margin-top: 1rem;">
+                            <h3>✅ Tested Executors:</h3>
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                                ${script.testedExecutors.map(e => `
+                                    <div style="background: #2a2a2a; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">
+                                        ${e.title}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
             `;
-        });
-        pastesContainer.innerHTML = html;
-        // attach raw actions
-        document.querySelectorAll('.raw-action').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const key = btn.getAttribute('data-key');
-                fetchRawPasteByKey(key, false);
-            });
-        });
-        document.querySelectorAll('.delete-action').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const key = btn.getAttribute('data-key');
-                if (confirm(`Delete paste ${key} permanently?`)) {
-                    document.getElementById('pasteKeyField').value = key;
-                    await deletePaste();
-                    await listPastes();
-                }
-            });
-        });
-        setActionStatus(`Loaded ${pastes.length} pastes`, false);
-    }
-
-    async function fetchRawPasteByKey(pasteKey, isGuestMode = false) {
-        if (!pasteKey) return;
-        try {
-            let url = `https://pastebin.com/raw/${pasteKey}`;
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const raw = await res.text();
-            alert(`📜 RAW content for ${pasteKey}:\n\n${raw.substring(0, 3000)}${raw.length > 3000 ? '\n... (truncated)' : ''}`);
-            setActionStatus(`Raw content loaded for ${pasteKey}`, false);
-        } catch (err) {
-            setActionStatus(`Failed to fetch raw: ${err.message}`, true);
         }
-    }
-
-    // user details
-    async function fetchUserDetails() {
-        if (!currentDevKey) { setUserInfoMessage('Dev key required', true); return; }
-        if (!currentUserKey) { setUserInfoMessage('User session key required (login first)', true); return; }
-        const params = {
-            api_dev_key: currentDevKey,
-            api_user_key: currentUserKey,
-            api_option: 'userdetails'
-        };
-        const result = await callPastebinAPI(params);
-        if (!result.ok) {
-            setUserInfoMessage(`User details error: ${result.error}`, true);
-            return;
-        }
-        const xmlText = result.data;
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(xmlText, 'text/xml');
-        const user = doc.querySelector('user');
-        if (!user) {
-            setUserInfoMessage('Could not parse user info', true);
-            return;
-        }
-        const name = user.querySelector('user_name')?.textContent || 'N/A';
-        const format = user.querySelector('user_format_short')?.textContent || 'text';
-        const expiration = user.querySelector('user_expiration')?.textContent || 'N';
-        const avatar = user.querySelector('user_avatar_url')?.textContent || '';
-        const privateSetting = user.querySelector('user_private')?.textContent;
-        setUserInfoMessage(`👤 ${escapeHtml(name)} | Default format: ${format} | Expire: ${expiration} | Private mode: ${privateSetting === '1' ? 'Unlisted' : 'Public'} ${avatar ? '| avatar present' : ''}`, false);
-    }
-
-    // login popup style (simple prompt)
-    async function interactiveLogin() {
-        const username = prompt('Enter Pastebin username:');
-        if (!username) return;
-        const password = prompt('Enter Pastebin password:');
-        if (!password) return;
-        setActionStatus('Logging in, obtaining user key...', false);
-        try {
-            const userKey = await fetchUserKey(username, password);
-            if (userKey && !userKey.includes('Bad')) {
-                currentUserKey = userKey;
-                localStorage.setItem('pastebin_user_key', currentUserKey);
-                userKeyInput.value = currentUserKey;
-                setActionStatus(`✅ User key obtained: ${userKey.substring(0, 10)}...`, false);
-                setUserInfoMessage('User key ready! Use "List My Pastes" or "User Info"', false);
-            } else {
-                throw new Error(userKey);
+        
+        function copyCode() {
+            const code = document.getElementById('scriptCode')?.innerText;
+            if (code) {
+                navigator.clipboard.writeText(code);
+                showToast('✅ Code copied to clipboard!');
             }
-        } catch (err) {
-            setActionStatus(`Login error: ${err.message}`, true);
         }
-    }
-
-    // Save dev key
-    function saveDevKey() {
-        const newKey = devKeyInput.value.trim();
-        if (newKey) {
-            currentDevKey = newKey;
-            localStorage.setItem('pastebin_dev_key', currentDevKey);
-            setActionStatus('Developer API Key saved', false);
-        } else {
-            setActionStatus('Invalid dev key', true);
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
-    }
-
-    // manual raw fetch from input
-    function manualRawFetch() {
-        const key = rawPasteKeyInput.value.trim();
-        if (!key) { setActionStatus('Enter paste key', true); return; }
-        fetchRawPasteByKey(key, true);
-    }
-
-    // event binding
-    saveDevBtn.addEventListener('click', saveDevKey);
-    loginFormBtn.addEventListener('click', interactiveLogin);
-    createBtn.addEventListener('click', createPaste);
-    deleteBtn.addEventListener('click', deletePaste);
-    listBtn.addEventListener('click', () => listPastes(60));
-    userDetailsBtn.addEventListener('click', fetchUserDetails);
-    loadRawBtn.addEventListener('click', manualRawFetch);
-    fetchRawByKeyBtn.addEventListener('click', () => {
-        const key = prompt('Enter paste key to get raw content:', '');
-        if (key) fetchRawPasteByKey(key, true);
-    });
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                currentPage = 1;
+                loadScripts();
+                setTimeout(scrollToScripts, 300);
+            });
         });
-    }
-
-    // initial hint
-    if (currentUserKey) {
-        setActionStatus('User session key loaded from storage', false);
-        userInfoBlock.innerText = '✅ User key ready. Click "List My Pastes"';
-    }
-</script>
+        
+        // Search input
+        let searchTimeout;
+        document.getElementById('searchInput')?.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentSearch = e.target.value;
+                currentPage = 1;
+                loadScripts();
+                setTimeout(scrollToScripts, 300);
+            }, 500);
+        });
+        
+        // Modal functions
+        let currentLink = '';
+        function openExternalLink(url) {
+            currentLink = url;
+            document.getElementById('externalLinkUrl').innerText = url;
+            document.getElementById('linkModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('linkModal').style.display = 'none'; }
+        function visitLink() { window.open(currentLink, '_blank'); closeModal(); }
+        
+        // Routing
+        function handleRouting() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (id) {
+                document.getElementById('homePage').classList.add('hidden');
+                document.getElementById('detailPage').classList.remove('hidden');
+                loadScriptDetail(id);
+            } else {
+                checkInstructionsCompleted();
+            }
+        }
+        
+        handleRouting();
+        window.addEventListener('popstate', handleRouting);
+    </script>
 </body>
 </html>
