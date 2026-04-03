@@ -19,7 +19,6 @@
             color: #e5e5e5;
         }
 
-        /* Navbar */
         .navbar {
             background: #0f0f0f;
             border-bottom: 1px solid #2a2a2a;
@@ -69,53 +68,12 @@
             border-color: #8b5cf6;
         }
 
-        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 1.5rem;
         }
 
-        /* Three column layout */
-        .three-columns {
-            display: grid;
-            grid-template-columns: 180px 1fr 180px;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 1024px) {
-            .three-columns {
-                grid-template-columns: 1fr;
-            }
-            .left-sidebar, .right-sidebar {
-                display: none;
-            }
-        }
-
-        /* Sidebar ads */
-        .left-sidebar, .right-sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .ad-box {
-            background: #121212;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            padding: 0.75rem;
-            text-align: center;
-        }
-
-        .ad-label {
-            font-size: 0.7rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Main content */
         .hero {
             text-align: center;
             padding: 3rem 1rem;
@@ -131,6 +89,10 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+
+        .hero p {
+            color: #aaa;
         }
 
         .instructions-card {
@@ -171,7 +133,6 @@
             background: #3a3a3a;
         }
 
-        /* Search section */
         .search-section {
             margin-bottom: 2rem;
         }
@@ -214,7 +175,6 @@
             color: white;
         }
 
-        /* Scripts grid */
         .scripts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -233,14 +193,6 @@
         .script-card:hover {
             transform: translateY(-4px);
             border-color: #8b5cf6;
-        }
-
-        .script-thumbnail {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 0.8rem;
         }
 
         .script-type {
@@ -275,7 +227,6 @@
             margin-top: 1rem;
         }
 
-        /* Script detail */
         .script-detail {
             background: #121212;
             border-radius: 24px;
@@ -297,19 +248,16 @@
             word-break: break-word;
         }
 
-        /* Loading */
         .loading {
             text-align: center;
             padding: 3rem;
             color: #888;
         }
 
-        /* Hidden */
         .hidden {
             display: none;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -333,7 +281,6 @@
             }
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -360,7 +307,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Pagination */
         .pagination {
             display: flex;
             justify-content: center;
@@ -368,13 +314,6 @@
             margin-top: 2rem;
         }
 
-        /* Horizontal ad */
-        .horizontal-ad {
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -386,14 +325,9 @@
                 grid-template-columns: 1fr;
             }
         }
-
-        footer a {
-            color: #666;
-            text-decoration: none;
-        }
     </style>
     
-    <!-- Linkvertise Monetization Script - Updated -->
+    <!-- ONLY Linkvertise - NO other ad scripts -->
     <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
     <script>
         linkvertise(4752730, {
@@ -407,12 +341,6 @@
             blacklist: []
         });
     </script>
-    
-    <!-- Additional ad scripts -->
-    <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1251105"></script>
-    <script src="https://theoreticalassertshame.com/3d/f2/ae/3df2ae10ef8df3ee78e9f80c1287a09c.js"></script>
-    <script async="async" data-cfasync="false" src="https://theoreticalassertshame.com/b90454a4e93508bbbd6a0d811d5605d4/invoke.js"></script>
-    <script src="https://pl29027395.profitablecpmratenetwork.com/3d/f2/ae/3df2ae10ef8df3ee78e9f80c1287a09c.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -426,138 +354,67 @@
     </nav>
 
     <div class="container">
-        <div class="three-columns">
-            <!-- LEFT SIDEBAR ADS -->
-            <div class="left-sidebar">
-                <div class="ad-box">
-                    <div class="ad-label">Advertisement</div>
-                    <div style="background:#1a1a1a; height:250px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                        <span style="color:#666;">Ad Space</span>
+        <div class="main-content">
+            <div id="homePage">
+                <div class="hero">
+                    <h1>Roblox Script Hub</h1>
+                    <p>Discover, share, and use the best Roblox scripts</p>
+                </div>
+                
+                <!-- INSTRUCTIONS SECTION -->
+                <div id="instructionsSection" class="instructions-card">
+                    <div style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); border-radius: 20px; padding: 2rem; color: white; text-align: center;">
+                        <h2>📋 Welcome to ScriptHub!</h2>
+                        <p style="margin: 1rem 0;">To access scripts, please complete these simple steps:</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
+                            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
+                                <span style="font-size: 2rem;">1️⃣</span>
+                                <p>Disable Ad Blocker</p>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
+                                <span style="font-size: 2rem;">2️⃣</span>
+                                <p>Wait 10 seconds</p>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
+                                <span style="font-size: 2rem;">3️⃣</span>
+                                <p>Click "I Understand"</p>
+                            </div>
+                        </div>
+                        <button id="completeInstructionsBtn" class="btn-primary" onclick="completeInstructions()" style="background: white; color: #8b5cf6;">✅ I Understand - Show Scripts</button>
                     </div>
                 </div>
-                <div class="ad-box">
-                    <div class="ad-label">Sponsored</div>
-                    <div style="background:#1a1a1a; height:400px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                        <span style="color:#666;">Ad Space</span>
+
+                <!-- SCRIPTS SECTION - Local demo data -->
+                <div id="scriptsSection" style="display: none;">
+                    <div class="search-section">
+                        <input type="text" id="searchInput" placeholder="🔍 Search scripts..." class="search-input">
+                        <div class="filters">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="noKey">No Key System</button>
+                            <button class="filter-btn" data-filter="mobile">Mobile Ready</button>
+                            <button class="filter-btn" data-filter="free">Free Scripts</button>
+                            <button class="filter-btn" data-filter="verified">Verified Only</button>
+                        </div>
                     </div>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Native Banner</div>
-                    <div id="container-b90454a4e93508bbbd6a0d811d5605d4" style="background:#1a1a1a; height:200px; display:flex; align-items:center; justify-content:center;">
-                        <span style="color:#666;">Native Ad</span>
+
+                    <div id="scriptsGrid" class="scripts-grid">
+                        <div class="loading">Loading scripts...</div>
+                    </div>
+
+                    <div id="pagination" class="pagination">
+                        <button id="prevBtn" class="btn-secondary" onclick="prevPage()" style="display: none;">← Previous</button>
+                        <span id="pageInfo" style="color: #a3a3a3; padding: 10px;"></span>
+                        <button id="nextBtn" class="btn-secondary" onclick="nextPage()" style="display: none;">Next →</button>
                     </div>
                 </div>
             </div>
 
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div id="homePage">
-                    <div class="hero">
-                        <h1>Roblox Script Hub</h1>
-                        <p>Discover, share, and use the best Roblox scripts</p>
-                    </div>
-                    
-                    <!-- INSTRUCTIONS SECTION -->
-                    <div id="instructionsSection" class="instructions-card">
-                        <div style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); border-radius: 20px; padding: 2rem; color: white; text-align: center;">
-                            <h2>📋 Welcome to ScriptHub!</h2>
-                            <p style="margin: 1rem 0;">To access scripts, please complete these simple steps:</p>
-                            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
-                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
-                                    <span style="font-size: 2rem;">1️⃣</span>
-                                    <p>Disable Ad Blocker</p>
-                                </div>
-                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
-                                    <span style="font-size: 2rem;">2️⃣</span>
-                                    <p>Wait 10 seconds</p>
-                                </div>
-                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
-                                    <span style="font-size: 2rem;">3️⃣</span>
-                                    <p>Click "I Understand"</p>
-                                </div>
-                            </div>
-                            <button id="completeInstructionsBtn" class="btn-primary" onclick="completeInstructions()" style="background: white; color: #8b5cf6;">✅ I Understand - Show Scripts</button>
-                        </div>
-                    </div>
-
-                    <!-- SCRIPTS SECTION - Local demo data -->
-                    <div id="scriptsSection" style="display: none;">
-                        <div class="search-section">
-                            <input type="text" id="searchInput" placeholder="🔍 Search scripts..." class="search-input">
-                            <div class="filters">
-                                <button class="filter-btn active" data-filter="all">All</button>
-                                <button class="filter-btn" data-filter="noKey">No Key System</button>
-                                <button class="filter-btn" data-filter="mobile">Mobile Ready</button>
-                                <button class="filter-btn" data-filter="free">Free Scripts</button>
-                                <button class="filter-btn" data-filter="verified">Verified Only</button>
-                            </div>
-                        </div>
-
-                        <div id="scriptsGrid" class="scripts-grid">
-                            <div class="loading">Loading scripts...</div>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div id="pagination" class="pagination">
-                            <button id="prevBtn" class="btn-secondary" onclick="prevPage()" style="display: none;">← Previous</button>
-                            <span id="pageInfo" style="color: #a3a3a3; padding: 10px;"></span>
-                            <button id="nextBtn" class="btn-secondary" onclick="nextPage()" style="display: none;">Next →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Script Detail Page -->
-                <div id="detailPage" class="hidden">
-                    <div id="scriptContent"></div>
-                    <div class="horizontal-ad" style="margin-top: 2rem;">
-                        <div class="ad-label">Advertisement</div>
-                        <div style="background:#1a1a1a; height:90px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                            <span style="color:#666;">Ad Space - 728x90</span>
-                        </div>
-                    </div>
-                    <div class="horizontal-ad" style="margin-top: 1rem;">
-                        <div class="ad-label">Recommended</div>
-                        <div style="background:#1a1a1a; height:250px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                            <span style="color:#666;">Ad Space - 300x250</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT SIDEBAR ADS -->
-            <div class="right-sidebar">
-                <div class="ad-box">
-                    <div class="ad-label">Sponsored</div>
-                    <div style="background:#1a1a1a; height:300px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                        <span style="color:#666;">Ad Space</span>
-                    </div>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Recommended</div>
-                    <div style="background:#1a1a1a; height:250px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                        <span style="color:#666;">Ad Space</span>
-                    </div>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Network Ad</div>
-                    <div style="background:#1a1a1a; height:60px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                        <span style="color:#666;">Ad Space - 468x60</span>
-                    </div>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Large Ad</div>
-                    <div style="background:#1a1a1a; height:600px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                        <span style="color:#666;">Ad Space - 160x600</span>
-                    </div>
-                </div>
+            <!-- Script Detail Page -->
+            <div id="detailPage" class="hidden">
+                <div id="scriptContent"></div>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer style="text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #2a2a2a; background: #0f0f0f;">
-        <a href="https://theoreticalassertshame.com/cf2pmntd4?key=58419b4b69181e2cbecd321ed95c7cb8" target="_blank" rel="nofollow noopener" style="color: #666; text-decoration: none; font-size: 12px;">Ads by TheoreticalAssertShame</a>
-    </footer>
 
     <div id="linkModal" class="modal">
         <div class="modal-content">
@@ -571,11 +428,8 @@
         </div>
     </div>
 
-    <!-- Social Bar and Popunder -->
-    <script src="https://theoreticalassertshame.com/22/bd/15/22bd15cffb30179ea9161453db7a28a8.js"></script>
-    
     <script>
-        // LOCAL DEMO SCRIPTS - No external API calls, just for testing
+        // LOCAL DEMO SCRIPTS - No external API calls
         const DEMO_SCRIPTS = [
             {
                 _id: "1",
@@ -587,7 +441,6 @@
                 paid: false,
                 keySystem: false,
                 mobileReady: true,
-                image: null,
                 game: { title: "Blox Fruits", gameLink: "https://roblox.com/games/2753915549" },
                 testedExecutors: [{ title: "Krnl" }, { title: "Synapse X" }],
                 rawScript: "-- Blox Fruits Auto Farm Script\n-- Works with most executors\nloadstring(game:HttpGet('https://example.com/script.lua'))()"
@@ -602,7 +455,6 @@
                 paid: false,
                 keySystem: true,
                 mobileReady: false,
-                image: null,
                 game: { title: "Pet Simulator 99", gameLink: "https://roblox.com/games/13488798954" },
                 testedExecutors: [{ title: "ScriptWare" }, { title: "Fluxus" }],
                 rawScript: "-- Pet Simulator 99 Script\n-- Key required\n-- Get key from linkvertise"
@@ -617,7 +469,6 @@
                 paid: true,
                 keySystem: false,
                 mobileReady: false,
-                image: null,
                 game: { title: "Arsenal", gameLink: "https://roblox.com/games/286090429" },
                 testedExecutors: [{ title: "Synapse X" }, { title: "ScriptWare" }],
                 rawScript: "-- Arsenal Aimbot Script\n-- Paid version\n-- Contact @ArsenalCheats on Discord"
@@ -632,7 +483,6 @@
                 paid: false,
                 keySystem: false,
                 mobileReady: true,
-                image: null,
                 game: { title: "King Legacy", gameLink: "https://roblox.com/games/4520749081" },
                 testedExecutors: [{ title: "Krnl" }, { title: "Fluxus" }],
                 rawScript: "-- King Legacy Auto Farm\n-- loadstring(game:HttpGet('https://pastebin.com/raw/xxx'))()"
@@ -647,7 +497,6 @@
                 paid: false,
                 keySystem: true,
                 mobileReady: false,
-                image: null,
                 game: { title: "Anime Adventures", gameLink: "https://roblox.com/games/8616833801" },
                 testedExecutors: [{ title: "Synapse X" }],
                 rawScript: "-- Anime Adventures Script\n-- Key system active\n-- Complete linkvertise to unlock"
@@ -662,7 +511,6 @@
                 paid: false,
                 keySystem: false,
                 mobileReady: true,
-                image: null,
                 game: { title: "Blade Ball", gameLink: "https://roblox.com/games/13772394625" },
                 testedExecutors: [{ title: "Krnl" }, { title: "ScriptWare" }, { title: "Fluxus" }],
                 rawScript: "-- Blade Ball Auto Parry\nloadstring(game:HttpGet('https://example.com/bladeball.lua'))()"
@@ -752,7 +600,6 @@
             const grid = document.getElementById('scriptsGrid');
             grid.innerHTML = '<div class="loading">Loading scripts...</div>';
             
-            // Filter scripts
             let filtered = [...DEMO_SCRIPTS];
             
             if (currentFilter === 'noKey') {
