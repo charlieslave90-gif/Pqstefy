@@ -3,683 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="aHm-u6Lw7BRLde6l91yNdtVltbZu8np4hRcmCrn4iYI">
-    <meta name="google-adsense-account" content="ca-pub-4130246379396222">
-    <title>ScriptHub - Roblox Script Library</title>
-    <link rel="stylesheet" href="styles.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4130246379396222"
-     crossorigin="anonymous"></script>
-    
-    <!-- Linkvertise Monetization Script -->
-    <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
-    <script>
-        linkvertise(4752730, {
-            whitelist: [
-                "https://rblxscripts2.vercel.app/?id=69cfb7c84d82cd3c779d6525",
-                "https://rblxscripts2.vercel.app/",
-                "https://rblxscripts2.vercel.app/key.html"
-            ], 
-            blacklist: []
-        });
-    </script>
-    
-    <!-- Scripts before closing head -->
-    <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1251105"></script>
-    <script src="https://theoreticalassertshame.com/3d/f2/ae/3df2ae10ef8df3ee78e9f80c1287a09c.js"></script>
-    <script async="async" data-cfasync="false" src="https://theoreticalassertshame.com/b90454a4e93508bbbd6a0d811d5605d4/invoke.js"></script>
-    <script src="https://pl29027395.profitablecpmratenetwork.com/3d/f2/ae/3df2ae10ef8df3ee78e9f80c1287a09c.js"></script>
-    
+    <title>Private Script Vault | Admin</title>
     <style>
-        /* Countdown animation */
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 2rem 1rem;
         }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .container { max-width: 1300px; margin: 0 auto; }
+        .header {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(56, 189, 248, 0.2);
         }
-        
-        .countdown-timer {
-            font-size: 48px;
-            font-weight: bold;
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-            border-radius: 60px;
-            margin: 20px 0;
-            animation: pulse 1s infinite;
-            font-family: monospace;
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #c084fc, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        
-        .countdown-container {
-            text-align: center;
-            padding: 20px;
-            background: #1a1a1a;
-            border-radius: 20px;
-            border: 1px solid #2a2a2a;
-            margin: 20px 0;
-        }
-        
-        .countdown-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #2a2a2a;
-            border-top: 4px solid #8b5cf6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 15px;
-            vertical-align: middle;
-        }
-        
-        .script-hidden {
-            filter: blur(5px);
-            pointer-events: none;
-            user-select: none;
-        }
-        
-        .unlock-button {
-            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: transform 0.3s;
-        }
-        
-        .unlock-button:hover {
-            transform: scale(1.05);
-        }
-        
-        .unlock-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .script-code-wrapper {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .lock-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
+        .badge {
+            background: #1e293b;
+            padding: 0.25rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            display: inline-flex;
             align-items: center;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            z-index: 10;
+            gap: 6px;
         }
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+        .card {
+            background: rgba(18, 25, 45, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 1.8rem;
+            border: 1px solid rgba(71, 85, 105, 0.4);
+            padding: 1.8rem;
+        }
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            border-left: 3px solid #3b82f6;
+            padding-left: 1rem;
+        }
+        textarea, input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+            color: #f1f5f9;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+        button {
+            background: #2563eb;
+            border: none;
+            padding: 0.7rem 1.4rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+        }
+        .script-list { max-height: 480px; overflow-y: auto; margin-top: 1rem; }
+        .script-item {
+            background: #0f172a80;
+            border-radius: 1rem;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #3b82f6;
+        }
+        .delete-btn { background: #dc2626; padding: 0.3rem 0.8rem; border-radius: 1.5rem; font-size: 0.7rem; }
+        .raw-link {
+            font-size: 0.7rem;
+            background: #1e293b;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e293b;
+            padding: 12px 20px;
+            border-radius: 40px;
+            border-left: 4px solid #10b981;
+            z-index: 1000;
+        }
+        @media (max-width: 800px) { .grid-2col { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo" onclick="showHome()">🎮 ScriptHub</div>
-            <div class="nav-links">
-                <button onclick="showHome()">Home</button>
-                <button onclick="window.location.href='/key.html'">🔑 Keys</button>
+<div class="container">
+    <div class="header">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div>
+                <h1>🔐 Private Script Vault</h1>
+                <div style="margin-top: 8px; display: flex; gap: 12px;">
+                    <span class="badge">🔒 Admin Only</span>
+                    <span class="badge">🐘 PostgreSQL (Wispbyte)</span>
+                    <span class="badge">⚡ Roblox Executor Ready</span>
+                </div>
             </div>
+            <button id="refreshScriptsBtn" style="background:#334155;">⟳ Refresh</button>
         </div>
-    </nav>
+    </div>
 
-    <div class="container">
-        <div class="three-columns">
-            <!-- LEFT SIDEBAR ADS -->
-            <div class="left-sidebar">
-                <div class="ad-box">
-                    <div class="ad-label">Advertisement</div>
-                    <script>
-                        atOptions = {'key':'673fb53f64c762401413eb44406c1c80','format':'iframe','height':300,'width':160,'params':{}};
-                    </script>
-                    <script src="https://www.highperformanceformat.com/673fb53f64c762401413eb44406c1c80/invoke.js"></script>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Sponsored</div>
-                    <script>
-                        atOptions = {'key':'9ad3c1db141549482622fa057c0a1495','format':'iframe','height':600,'width':160,'params':{}};
-                    </script>
-                    <script src="https://www.highperformanceformat.com/9ad3c1db141549482622fa057c0a1495/invoke.js"></script>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Native Banner</div>
-                    <div id="container-b90454a4e93508bbbd6a0d811d5605d4"></div>
-                </div>
+    <div class="grid-2col">
+        <div class="card">
+            <h2>📤 Upload New Script</h2>
+            <div style="margin-bottom: 1rem;">
+                <label style="font-size:0.8rem;">Script Title</label>
+                <input type="text" id="scriptTitle" placeholder="e.g., Owl Hub v2">
             </div>
-
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div id="homePage">
-                    <div class="hero">
-                        <h1>Roblox Script Hub</h1>
-                        <p>Discover, share, and use the best Roblox scripts</p>
-                    </div>
-                    
-                    <!-- INSTRUCTIONS SECTION -->
-                    <div id="instructionsSection" class="instructions-card">
-                        <div style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); border-radius: 20px; padding: 2rem; color: white; text-align: center;">
-                            <h2>📋 Welcome to ScriptHub!</h2>
-                            <p style="margin: 1rem 0;">To access scripts, please complete these simple steps:</p>
-                            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
-                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
-                                    <span style="font-size: 2rem;">1️⃣</span>
-                                    <p>Disable Ad Blocker</p>
-                                </div>
-                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
-                                    <span style="font-size: 2rem;">2️⃣</span>
-                                    <p>Wait 10 seconds</p>
-                                </div>
-                                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 12px; flex: 1; min-width: 150px;">
-                                    <span style="font-size: 2rem;">3️⃣</span>
-                                    <p>Click "I Understand"</p>
-                                </div>
-                            </div>
-                            <button id="completeInstructionsBtn" class="btn-primary" onclick="completeInstructions()" style="background: white; color: #8b5cf6;">✅ I Understand - Show Scripts</button>
-                        </div>
-                    </div>
-
-                    <!-- SCRIPTS SECTION -->
-                    <div id="scriptsSection" style="display: none;">
-                        <div class="search-section">
-                            <input type="text" id="searchInput" placeholder="🔍 Search scripts..." class="search-input">
-                            <div class="filters">
-                                <button class="filter-btn active" data-filter="all">All</button>
-                                <button class="filter-btn" data-filter="noKey">No Key System</button>
-                                <button class="filter-btn" data-filter="mobile">Mobile Ready</button>
-                                <button class="filter-btn" data-filter="free">Free Scripts</button>
-                                <button class="filter-btn" data-filter="verified">Verified Only</button>
-                            </div>
-                        </div>
-
-                        <div id="scriptsGrid" class="scripts-grid">
-                            <div class="loading">Loading scripts...</div>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div id="pagination" class="pagination" style="display: flex; justify-content: center; gap: 10px; margin-top: 30px; flex-wrap: wrap;">
-                            <button id="prevBtn" class="btn-secondary" onclick="prevPage()" style="display: none;">← Previous</button>
-                            <span id="pageInfo" style="color: #a3a3a3; padding: 10px;"></span>
-                            <button id="nextBtn" class="btn-secondary" onclick="nextPage()" style="display: none;">Next →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Script Detail Page -->
-                <div id="detailPage" class="hidden">
-                    <div id="scriptContent"></div>
-                    <div class="horizontal-ad" style="margin-top: 2rem;">
-                        <div class="ad-label">Advertisement</div>
-                        <script>
-                            atOptions = {'key':'30772cccaf8ca1f9a16a3c555509b64f','format':'iframe','height':90,'width':728,'params':{}};
-                        </script>
-                        <script src="https://www.highperformanceformat.com/30772cccaf8ca1f9a16a3c555509b64f/invoke.js"></script>
-                    </div>
-                    <div class="horizontal-ad" style="margin-top: 1rem;">
-                        <div class="ad-label">Recommended</div>
-                        <script>
-                            atOptions = {'key':'5c4ab71c3e05e8f162c6845ea1c55950','format':'iframe','height':250,'width':300,'params':{}};
-                        </script>
-                        <script src="https://www.highperformanceformat.com/5c4ab71c3e05e8f162c6845ea1c55950/invoke.js"></script>
-                    </div>
-                </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="font-size:0.8rem;">Lua Script Content</label>
+                <textarea id="scriptContent" rows="8" placeholder="-- Your Roblox Lua script&#10;loadstring(game:HttpGet('https://...'))()"></textarea>
             </div>
+            <button id="uploadScriptBtn">✨ Upload & Generate Links</button>
+            <div id="uploadResult" style="margin-top: 1rem; font-size:0.8rem; background:#0f172a; padding:0.7rem; border-radius:1rem; word-break:break-all;"></div>
+        </div>
 
-            <!-- RIGHT SIDEBAR ADS -->
-            <div class="right-sidebar">
-                <div class="ad-box">
-                    <div class="ad-label">Sponsored</div>
-                    <script>
-                        atOptions = {'key':'673fb53f64c762401413eb44406c1c80','format':'iframe','height':300,'width':160,'params':{}};
-                    </script>
-                    <script src="https://www.highperformanceformat.com/673fb53f64c762401413eb44406c1c80/invoke.js"></script>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Recommended</div>
-                    <script>
-                        atOptions = {'key':'5c4ab71c3e05e8f162c6845ea1c55950','format':'iframe','height':250,'width':300,'params':{}};
-                    </script>
-                    <script src="https://www.highperformanceformat.com/5c4ab71c3e05e8f162c6845ea1c55950/invoke.js"></script>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Network Ad</div>
-                    <script>
-                        atOptions = {'key':'7c7fd511e2480eb4fe47887cda152595','format':'iframe','height':60,'width':468,'params':{}};
-                    </script>
-                    <script src="https://www.highperformanceformat.com/7c7fd511e2480eb4fe47887cda152595/invoke.js"></script>
-                </div>
-                <div class="ad-box">
-                    <div class="ad-label">Large Ad</div>
-                    <script>
-                        atOptions = {'key':'9ad3c1db141549482622fa057c0a1495','format':'iframe','height':600,'width':160,'params':{}};
-                    </script>
-                    <script src="https://www.highperformanceformat.com/9ad3c1db141549482622fa057c0a1495/invoke.js"></script>
-                </div>
+        <div class="card">
+            <h2>📜 Your Scripts (Auto Raw Mode)</h2>
+            <div class="script-list" id="scriptListContainer">
+                <div style="text-align:center; padding:2rem; color:#6b7280;">Loading scripts...</div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer style="text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #2a2a2a; background: #0f0f0f;">
-        <a href="https://theoreticalassertshame.com/cf2pmntd4?key=58419b4b69181e2cbecd321ed95c7cb8" target="_blank" rel="nofollow noopener" style="color: #666; text-decoration: none; font-size: 12px;">Ads by TheoreticalAssertShame</a>
-    </footer>
-
-    <div id="linkModal" class="modal">
-        <div class="modal-content">
-            <h3>⚠️ External Link</h3>
-            <p>You are about to leave ScriptHub.</p>
-            <p id="externalLinkUrl" style="word-break:break-all;"></p>
-            <div style="display:flex; gap:1rem; margin-top:1rem;">
-                <button onclick="closeModal()" class="btn-secondary">Cancel</button>
-                <button onclick="visitLink()" class="btn-primary">Continue →</button>
-            </div>
+    <div class="card" style="margin-top: 1.5rem;">
+        <h2>🔗 API Endpoints</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-family: monospace; font-size:0.85rem;">
+            <div style="background:#0f172a; padding: 0.5rem 1rem; border-radius: 1rem;"><strong>GET /api/script?id={id}</strong> → ❌ Blocked (Black Screen)</div>
+            <div style="background:#0f172a; padding: 0.5rem 1rem; border-radius: 1rem;"><strong>GET /api/raw?id={id}</strong> → ✅ Pure Lua (Executor works)</div>
+            <div style="background:#0f172a; padding: 0.5rem 1rem; border-radius: 1rem;"><strong>POST /api/upload</strong> → Admin only</div>
+            <div style="background:#0f172a; padding: 0.5rem 1rem; border-radius: 1rem;"><strong>DELETE /api/delete</strong> → Admin only</div>
         </div>
     </div>
+</div>
 
-    <!-- Social Bar and Popunder -->
-    <script src="https://theoreticalassertshame.com/22/bd/15/22bd15cffb30179ea9161453db7a28a8.js"></script>
+<script>
+    const API_BASE = '';
     
-    <script>
-        const API_URL = 'https://rscripts.net/api/v2';
-        let currentScripts = [];
-        let currentPage = 1;
-        let maxPages = 1;
-        let currentFilter = 'all';
-        let currentSearch = '';
-        let countdownInterval = null;
-        
-        // Auto-scroll to script hub section
-        function scrollToScripts() {
-            const scriptsSection = document.getElementById('scriptsSection');
-            if (scriptsSection && scriptsSection.style.display !== 'none') {
-                scriptsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+    async function fetchScripts() {
+        try {
+            const res = await fetch('/api/scripts');
+            if (!res.ok) throw new Error();
+            const scripts = await res.json();
+            renderScriptList(scripts);
+        } catch (err) {
+            document.getElementById("scriptListContainer").innerHTML = `<div style="color:#ef4444;">⚠️ Cannot connect to API. Make sure backend is deployed.</div>`;
         }
-        
-        // Scroll to script hub on any page load
-        function scrollToScriptHub() {
-            setTimeout(() => {
-                const scriptsSection = document.getElementById('scriptsSection');
-                const homePage = document.getElementById('homePage');
-                if (scriptsSection && scriptsSection.style.display !== 'none') {
-                    scriptsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else if (homePage && !homePage.classList.contains('hidden')) {
-                    const hero = document.querySelector('.hero');
-                    if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 300);
+    }
+
+    function renderScriptList(scripts) {
+        const container = document.getElementById("scriptListContainer");
+        if (!scripts.length) {
+            container.innerHTML = `<div style="text-align:center; padding:2rem;">📭 No scripts uploaded yet.</div>`;
+            return;
         }
-        
-        // Start countdown for script unlock
-        function startCountdown(scriptCodeElement, copyButton, seconds = 10) {
-            let timeLeft = seconds;
-            const countdownContainer = document.createElement('div');
-            countdownContainer.className = 'countdown-container';
-            countdownContainer.innerHTML = `
-                <div class="countdown-spinner"></div>
-                <span style="font-size: 18px;">Please wait </span>
-                <span class="countdown-timer" style="font-size: 32px; display: inline-block; min-width: 80px;">${timeLeft}</span>
-                <span style="font-size: 18px;"> seconds...</span>
-                <div style="margin-top: 10px; font-size: 14px; color: #a3a3a3;">⏳ Script will unlock automatically</div>
-            `;
-            
-            // Hide the script code and show countdown
-            const scriptCodeWrapper = scriptCodeElement.parentElement;
-            const originalContent = scriptCodeElement.style.display;
-            scriptCodeElement.style.display = 'none';
-            scriptCodeElement.parentElement.insertBefore(countdownContainer, scriptCodeElement);
-            
-            if (copyButton) {
-                copyButton.disabled = true;
-                copyButton.style.opacity = '0.5';
-                copyButton.style.cursor = 'not-allowed';
-                copyButton.textContent = `⏳ Wait ${timeLeft}s...`;
-            }
-            
-            countdownInterval = setInterval(() => {
-                timeLeft--;
-                const timerSpan = countdownContainer.querySelector('.countdown-timer');
-                if (timerSpan) timerSpan.textContent = timeLeft;
-                if (copyButton) copyButton.textContent = `⏳ Wait ${timeLeft}s...`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    // Remove countdown and show script
-                    countdownContainer.remove();
-                    scriptCodeElement.style.display = originalContent || 'block';
-                    if (copyButton) {
-                        copyButton.disabled = false;
-                        copyButton.style.opacity = '1';
-                        copyButton.style.cursor = 'pointer';
-                        copyButton.textContent = '📋 Copy Code';
-                    }
-                    showToast('✅ Script unlocked! You can now copy the code.');
-                }
-            }, 1000);
-        }
-        
-        // Check if user has completed instructions
-        function checkInstructionsCompleted() {
-            const completed = localStorage.getItem('instructionsCompleted');
-            if (completed === 'true') {
-                document.getElementById('instructionsSection').style.display = 'none';
-                document.getElementById('scriptsSection').style.display = 'block';
-                loadScripts();
-                scrollToScriptHub();
-            } else {
-                document.getElementById('instructionsSection').style.display = 'block';
-                document.getElementById('scriptsSection').style.display = 'none';
-            }
-        }
-        
-        function completeInstructions() {
-            localStorage.setItem('instructionsCompleted', 'true');
-            document.getElementById('instructionsSection').style.display = 'none';
-            document.getElementById('scriptsSection').style.display = 'block';
-            loadScripts();
-            showToast('✅ Thanks! Scripts are now available.');
-            scrollToScriptHub();
-        }
-        
-        function showToast(message, isError = false) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.style.background = isError ? '#dc2626' : '#10b981';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-        
-        function showHome() {
-            document.getElementById('homePage').classList.remove('hidden');
-            document.getElementById('detailPage').classList.add('hidden');
-            window.history.pushState({}, '', '/');
-            currentPage = 1;
-            if (localStorage.getItem('instructionsCompleted') === 'true') {
-                loadScripts();
-                scrollToScriptHub();
-            }
-        }
-        
-        function showDetail(id) {
-            document.getElementById('homePage').classList.add('hidden');
-            document.getElementById('detailPage').classList.remove('hidden');
-            window.history.pushState({}, '', `/?id=${id}`);
-            loadScriptDetail(id);
-        }
-        
-        function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                loadScripts();
-                scrollToScriptHub();
-            }
-        }
-        
-        function nextPage() {
-            if (currentPage < maxPages) {
-                currentPage++;
-                loadScripts();
-                scrollToScriptHub();
-            }
-        }
-        
-        async function loadScripts() {
-            const grid = document.getElementById('scriptsGrid');
-            grid.innerHTML = '<div class="loading">Loading scripts...</div>';
-            
-            try {
-                let url = `${API_URL}/scripts?page=${currentPage}&orderBy=date&sort=desc`;
-                
-                if (currentFilter === 'noKey') url += '&noKeySystem=true';
-                else if (currentFilter === 'mobile') url += '&mobileOnly=true';
-                else if (currentFilter === 'free') url += '&notPaid=true';
-                else if (currentFilter === 'verified') url += '&verifiedOnly=true';
-                
-                if (currentSearch) url += `&q=${encodeURIComponent(currentSearch)}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data.error) {
-                    grid.innerHTML = `<div class="loading">Error: ${data.error}</div>`;
-                    return;
-                }
-                
-                currentScripts = data.scripts || [];
-                maxPages = data.info?.maxPages || 1;
-                
-                const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.getElementById('nextBtn');
-                const pageInfo = document.getElementById('pageInfo');
-                
-                if (maxPages > 1) {
-                    prevBtn.style.display = currentPage > 1 ? 'inline-block' : 'none';
-                    nextBtn.style.display = currentPage < maxPages ? 'inline-block' : 'none';
-                    pageInfo.textContent = `Page ${currentPage} of ${maxPages}`;
-                } else {
-                    prevBtn.style.display = 'none';
-                    nextBtn.style.display = 'none';
-                    pageInfo.textContent = '';
-                }
-                
-                displayScripts();
-            } catch (error) {
-                console.error('Error:', error);
-                grid.innerHTML = '<div class="loading">Error loading scripts. Please refresh.</div>';
-            }
-        }
-        
-        function displayScripts() {
-            const grid = document.getElementById('scriptsGrid');
-            
-            if (!currentScripts || currentScripts.length === 0) {
-                grid.innerHTML = '<div class="loading">No scripts found.</div>';
-                return;
-            }
-            
-            grid.innerHTML = currentScripts.map(script => `
-                <div class="script-card" onclick="showDetail('${script._id}')">
-                    ${script.image ? `<img src="${script.image}" class="script-thumbnail" onerror="this.style.display='none'">` : ''}
-                    <span class="script-type">${script.keySystem ? '🔑 Key System' : '🔓 No Key'} | ${script.mobileReady ? '📱 Mobile' : '💻 PC'}</span>
-                    <h3>${escapeHtml(script.title)}</h3>
-                    <div class="script-meta">
-                        👤 ${escapeHtml(script.user?.username || 'Unknown')} • 👁️ ${script.views || 0} views
-                        ${script.paid ? ' 💰 Paid' : ' 🆓 Free'}
-                    </div>
-                    <div class="script-description">${escapeHtml(script.description?.substring(0, 120) || 'No description')}...</div>
-                    <div class="script-footer">
-                        <button onclick="event.stopPropagation(); viewScript('${script._id}')" class="btn-secondary">View Script →</button>
-                    </div>
-                    <div class="horizontal-ad" style="margin-top: 1rem;">
-                        <div class="ad-label">Advertisement</div>
-                        <script>
-                            atOptions = {'key':'30772cccaf8ca1f9a16a3c555509b64f','format':'iframe','height':90,'width':728,'params':{}};
-                        <\/script>
-                        <script src="https://www.highperformanceformat.com/30772cccaf8ca1f9a16a3c555509b64f/invoke.js"><\/script>
+        container.innerHTML = "";
+        scripts.forEach(script => {
+            const div = document.createElement("div");
+            div.className = "script-item";
+            const rawUrl = `/api/raw?id=${script.id}`;
+            div.innerHTML = `
+                <div class="script-info">
+                    <div class="script-name">📜 ${escapeHtml(script.title)}</div>
+                    <div class="script-id">ID: ${script.id} • ${new Date(script.created_at).toLocaleString()}</div>
+                    <div style="margin-top: 6px;">
+                        <span class="raw-link" data-url="${rawUrl}">🔗 Copy Raw Link (Executor)</span>
                     </div>
                 </div>
-            `).join('');
-        }
-        
-        async function loadScriptDetail(id) {
-            const contentDiv = document.getElementById('scriptContent');
-            contentDiv.innerHTML = '<div class="loading">Loading script...</div>';
-            
-            try {
-                const response = await fetch(`${API_URL}/script?id=${id}`);
-                const data = await response.json();
-                
-                if (data.error || !data.script) {
-                    showToast('Script not found. Redirecting to home...', true);
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 2000);
-                    return;
-                }
-                
-                const script = data.script;
-                
-                let rawScriptContent = '';
-                if (script.rawScript) {
-                    try {
-                        const rawResponse = await fetch(script.rawScript);
-                        rawScriptContent = await rawResponse.text();
-                    } catch (e) {
-                        rawScriptContent = 'Unable to load script content';
-                    }
-                }
-                
-                const gameLink = script.game?.gameLink || '#';
-                const gameTitle = script.game?.title || 'Unknown Game';
-                
-                // Create unique IDs for this script's elements
-                const scriptCodeId = `scriptCode_${Date.now()}`;
-                const copyBtnId = `copyBtn_${Date.now()}`;
-                
-                contentDiv.innerHTML = `
-                    <div class="script-detail">
-                        <button onclick="showHome()" class="btn-secondary" style="margin-bottom:1rem;">← Back to Home</button>
-                        
-                        ${script.image ? `<img src="${script.image}" style="width:100%; max-height:300px; object-fit:cover; border-radius:20px; margin-bottom:1rem;" onerror="this.style.display='none'">` : ''}
-                        
-                        <h1>${escapeHtml(script.title)}</h1>
-                        <div class="script-meta">
-                            👤 ${escapeHtml(script.user?.username || 'Unknown')} • 👁️ ${script.views || 0} views
-                            ${script.likes ? `❤️ ${script.likes}` : ''} ${script.dislikes ? `💔 ${script.dislikes}` : ''}
-                            ${script.paid ? '💰 Paid' : '🆓 Free'} • ${script.keySystem ? '🔑 Has Key System' : '🔓 No Key System'}
-                        </div>
-                        
-                        <p><strong>Game:</strong> <a href="${gameLink}" target="_blank">${escapeHtml(gameTitle)}</a></p>
-                        <p><strong>Description:</strong> ${escapeHtml(script.description || 'No description')}</p>
-                        
-                        ${script.rawScript ? `
-                            <div style="margin-top: 1rem;">
-                                <h3>📝 Script Code:</h3>
-                                <div class="script-code-wrapper">
-                                    <pre><code id="${scriptCodeId}">${escapeHtml(rawScriptContent)}</code></pre>
-                                    <button id="${copyBtnId}" class="btn-primary" style="margin-top:1rem;">📋 Copy Code</button>
-                                </div>
-                            </div>
-                        ` : '<p>No script content available</p>'}
-                        
-                        ${script.testedExecutors && script.testedExecutors.length > 0 ? `
-                            <div style="margin-top: 1rem;">
-                                <h3>✅ Tested Executors:</h3>
-                                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-                                    ${script.testedExecutors.map(e => `
-                                        <div style="background: #2a2a2a; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">
-                                            ${e.title}
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-                
-                // Start countdown for the copy button
-                if (script.rawScript) {
-                    const codeElement = document.getElementById(scriptCodeId);
-                    const copyButton = document.getElementById(copyBtnId);
-                    if (codeElement && copyButton) {
-                        startCountdown(codeElement, copyButton, 10);
-                    }
-                }
-                
-                // Auto-scroll to script content
-                setTimeout(() => {
-                    const scriptDetail = document.querySelector('.script-detail');
-                    if (scriptDetail) {
-                        scriptDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }, 100);
-                
-            } catch (error) {
-                console.error('Error loading script detail:', error);
-                showToast('Error loading script. Redirecting to home...', true);
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 2000);
-            }
-        }
-        
-        function copyCode() {
-            const code = document.getElementById('scriptCode')?.innerText;
-            if (code) {
-                navigator.clipboard.writeText(code);
-                showToast('✅ Code copied to clipboard!');
-            }
-        }
-        
-        function viewScript(id) {
-            showDetail(id);
-        }
-        
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
-                currentPage = 1;
-                loadScripts();
-                scrollToScriptHub();
+                <button class="delete-btn" data-id="${script.id}">Delete</button>
+            `;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('.raw-link').forEach(el => {
+            el.addEventListener('click', (e) => {
+                const url = el.getAttribute('data-url');
+                const fullUrl = window.location.origin + url;
+                navigator.clipboard.writeText(fullUrl);
+                showToast(`✅ Copied! Use: loadstring(game:HttpGet("${fullUrl}"))()`);
             });
         });
-        
-        let searchTimeout;
-        document.getElementById('searchInput')?.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                currentSearch = e.target.value;
-                currentPage = 1;
-                loadScripts();
-                scrollToScriptHub();
-            }, 500);
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const id = btn.getAttribute('data-id');
+                if(confirm(`Delete script ID ${id} permanently?`)) {
+                    await fetch('/api/delete', {
+                        method: "DELETE",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({ id: parseInt(id) })
+                    });
+                    showToast("🗑️ Deleted");
+                    fetchScripts();
+                }
+            });
         });
-        
-        let currentLink = '';
-        function openExternalLink(url) {
-            currentLink = url;
-            document.getElementById('externalLinkUrl').innerText = url;
-            document.getElementById('linkModal').style.display = 'flex';
-        }
-        function closeModal() { document.getElementById('linkModal').style.display = 'none'; }
-        function visitLink() { window.open(currentLink, '_blank'); closeModal(); }
-        
-        function handleRouting() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
-            if (id) {
-                document.getElementById('homePage').classList.add('hidden');
-                document.getElementById('detailPage').classList.remove('hidden');
-                loadScriptDetail(id);
-            } else {
-                checkInstructionsCompleted();
-            }
-        }
-        
-        handleRouting();
-        window.addEventListener('popstate', handleRouting);
-    </script>
+    }
+
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'; }); }
+
+    async function uploadScript() {
+        const title = document.getElementById("scriptTitle").value.trim();
+        const content = document.getElementById("scriptContent").value;
+        if(!title || !content) { showToast("❌ Title and content required", true); return; }
+        const btn = document.getElementById("uploadScriptBtn");
+        btn.disabled = true;
+        btn.innerText = "Uploading...";
+        try {
+            const res = await fetch('/api/upload', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, content })
+            });
+            const data = await res.json();
+            if(res.ok) {
+                const rawLink = window.location.origin + `/api/raw?id=${data.id}`;
+                document.getElementById("uploadResult").innerHTML = `✅ Uploaded! ID: ${data.id}<br>🔗 Executor Link: <strong>${rawLink}</strong><br>📋 loadstring(game:HttpGet("${rawLink}"))()`;
+                showToast("Script uploaded!");
+                document.getElementById("scriptTitle").value = "";
+                document.getElementById("scriptContent").value = "";
+                fetchScripts();
+            } else { showToast(`Error: ${data.error}`, true); }
+        } catch(err) { showToast("Network error", true); }
+        finally { btn.disabled = false; btn.innerText = "✨ Upload & Generate Links"; }
+    }
+
+    function showToast(msg, isError = false) {
+        let toast = document.querySelector('.toast');
+        if(toast) toast.remove();
+        toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.background = isError ? '#7f1a1a' : '#1e293b';
+        toast.style.borderLeftColor = isError ? '#ef4444' : '#10b981';
+        toast.innerText = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+    }
+
+    document.getElementById("uploadScriptBtn").addEventListener("click", uploadScript);
+    document.getElementById("refreshScriptsBtn").addEventListener("click", fetchScripts);
+    fetchScripts();
+</script>
 </body>
 </html>
