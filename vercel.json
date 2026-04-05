@@ -1,5 +1,30 @@
+// =============================================================
+// FILE: /vercel.json (Vercel deployment configuration)
+// =============================================================
+
 {
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/list.js" }
+    { "source": "/admin", "destination": "/admin.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/raw/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Content-Type", "value": "text/plain" }
+      ]
+    },
+    {
+      "source": "/api/script/(.*)",
+      "headers": [
+        { "key": "X-Roblox-Access-Denied", "value": "true" }
+      ]
+    }
   ]
 }
