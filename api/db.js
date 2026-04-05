@@ -1,8 +1,3 @@
-// =====================================================
-// PostgreSQL Database Connection Helper
-// Works with ANY PostgreSQL provider (Wispbyte, Neon, etc.)
-// =====================================================
-
 const { Pool } = require('pg');
 
 // Connection pool - stores the database connection
