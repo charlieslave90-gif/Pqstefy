@@ -1,26 +1,22 @@
 {
   "functions": {
     "api/*.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
+      "runtime": "nodejs18.x"
     }
   },
-  "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" }
-  ],
-  "headers": [
+  "routes": [
     {
-      "source": "/api/raw/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Content-Type", "value": "text/plain" }
-      ]
+      "src": "/api/(.*)",
+      "dest": "/api/$1",
+      "methods": ["GET", "POST", "DELETE", "OPTIONS"]
     },
     {
-      "source": "/api/script/(.*)",
-      "headers": [
-        { "key": "X-Roblox-Access-Denied", "value": "true" }
-      ]
+      "src": "/admin",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/admin.html"
     }
   ]
 }
