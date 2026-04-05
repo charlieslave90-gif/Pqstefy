@@ -1,15 +1,10 @@
 {
-  "name": "private-script-vault",
+  "name": "script-vault",
   "version": "1.0.0",
-  "description": "Private script hosting with PostgreSQL and Roblox executor support",
-  "main": "admin.html",
-  "scripts": {
-    "dev": "vercel dev"
+  "engines": {
+    "node": "20.x"
   },
   "dependencies": {
     "pg": "^8.11.3"
-  },
-  "engines": {
-    "node": ">=18.x"
   }
 }
