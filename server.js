@@ -23,7 +23,9 @@ function writeData(data) {
 }
 
 app.use(express.json());
-app.use(express.static('.'));
+app.use(express.static(__dirname));
+
+// ============= API ROUTES =============
 
 // Get all scripts
 app.get('/api/scripts', (req, res) => {
@@ -67,7 +69,7 @@ app.delete('/api/delete', (req, res) => {
   res.json({ success: true });
 });
 
-// Raw script for Roblox executors
+// RAW script for Roblox executors (THIS ONE WORKS - returns pure Lua)
 app.get('/api/raw', (req, res) => {
   const { id } = req.query;
   const data = readData();
@@ -77,29 +79,86 @@ app.get('/api/raw', (req, res) => {
     return res.status(404).send('Script not found');
   }
   
+  // Return pure Lua text for Roblox executor
   res.setHeader('Content-Type', 'text/plain');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.send(script.content);
 });
 
-// Blocked endpoint
+// BLOCKED endpoint - shows black screen (THIS ONE IS BLOCKED)
 app.get('/api/script', (req, res) => {
   const { id } = req.query;
   const data = readData();
   const script = data.scripts.find(s => s.id == id);
   
   if (!script) {
-    return res.status(404).send('Not found');
+    return res.status(404).send('Script not found');
   }
   
+  // BLACK SCREEN - blocks browser access
+  res.setHeader('Content-Type', 'text/html');
   res.status(403).send(`
     <!DOCTYPE html>
     <html>
-    <head><style>body{background:black;display:flex;align-items:center;justify-content:center;height:100vh;color:red;font-family:monospace;}</style></head>
-    <body><div><h1>⛔ ACCESS PROHIBITED jew</h1><p>Use /api/raw?id=${id} for Roblox executor.</p></div></body>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          background: #000000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          font-family: 'Courier New', monospace;
+          overflow: hidden;
+        }
+        .block-screen {
+          text-align: center;
+          color: #ff0000;
+          background: #0a0000;
+          padding: 2rem;
+          border: 2px solid #ff0000;
+          border-radius: 1rem;
+          box-shadow: 0 0 50px rgba(255,0,0,0.3);
+          animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+          0% { opacity: 0.8; }
+          50% { opacity: 1; box-shadow: 0 0 80px rgba(255,0,0,0.5); }
+          100% { opacity: 0.8; }
+        }
+        .block-screen h1 { font-size: 2rem; margin-bottom: 1rem; }
+        .block-screen p { color: #aa0000; font-size: 0.9rem; margin: 0.5rem 0; }
+        .block-screen .id { color: #ff4444; font-family: monospace; }
+        .block-screen small { color: #550000; display: block; margin-top: 1rem; }
+      </style>
+    </head>
+    <body>
+      <div class="block-screen">
+        <h1>⛔ ACCESS PROHIBITED Jew</h1>
+        <p>This endpoint is blocked for browser access.</p>
+        <p>Use <span class="id">/api/raw?id=${id}</span> for Roblox executor.</p>
+        <small>Request blocked • Script Vault Security System</small>
+      </div>
+    </body>
     </html>
   `);
 });
 
+// Serve admin page
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Home page redirects to admin
+app.get('/', (req, res) => {
+  res.redirect('/admin');
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Admin panel: http://localhost:${PORT}/admin`);
+  console.log(`Raw script example: http://localhost:${PORT}/api/raw?id=1`);
+  console.log(`Blocked endpoint: http://localhost:${PORT}/api/script?id=1`);
 });
