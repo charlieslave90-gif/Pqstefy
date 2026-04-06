@@ -5,15 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Private Script Vault | Admin</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             color: #e2e8f0;
             padding: 2rem 1rem;
         }
-        .container { max-width: 1300px; margin: 0 auto; }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
         .header {
             background: rgba(15, 25, 45, 0.7);
             backdrop-filter: blur(12px);
@@ -22,6 +32,7 @@
             margin-bottom: 2rem;
             border: 1px solid rgba(56, 189, 248, 0.2);
         }
+
         h1 {
             font-size: 2rem;
             background: linear-gradient(135deg, #c084fc, #60a5fa);
@@ -29,6 +40,7 @@
             background-clip: text;
             color: transparent;
         }
+
         .badge {
             background: #1e293b;
             padding: 0.25rem 0.8rem;
@@ -39,7 +51,13 @@
             align-items: center;
             gap: 6px;
         }
-        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+        }
+
         .card {
             background: rgba(18, 25, 45, 0.75);
             backdrop-filter: blur(8px);
@@ -47,12 +65,14 @@
             border: 1px solid rgba(71, 85, 105, 0.4);
             padding: 1.8rem;
         }
+
         .card h2 {
             font-size: 1.4rem;
             margin-bottom: 1.2rem;
             border-left: 3px solid #3b82f6;
             padding-left: 1rem;
         }
+
         textarea, input {
             width: 100%;
             background: #0f172a;
@@ -62,12 +82,15 @@
             color: #f1f5f9;
             font-family: 'Fira Code', monospace;
             font-size: 0.85rem;
+            resize: vertical;
         }
+
         textarea:focus, input:focus {
             outline: none;
             border-color: #60a5fa;
             box-shadow: 0 0 0 2px rgba(96,165,250,0.2);
         }
+
         button {
             background: #2563eb;
             border: none;
@@ -79,8 +102,18 @@
             transition: 0.2s;
             font-size: 0.85rem;
         }
-        button:hover { background: #3b82f6; transform: scale(0.98); }
-        .script-list { max-height: 480px; overflow-y: auto; margin-top: 1rem; }
+
+        button:hover {
+            background: #3b82f6;
+            transform: scale(0.98);
+        }
+
+        .script-list {
+            max-height: 480px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
         .script-item {
             background: #0f172a80;
             border-radius: 1rem;
@@ -91,9 +124,22 @@
             align-items: center;
             border-left: 3px solid #3b82f6;
         }
-        .script-info { flex: 1; }
-        .script-name { font-weight: 600; font-family: monospace; }
-        .script-id { font-size: 0.7rem; color: #94a3b8; font-family: monospace; }
+
+        .script-info {
+            flex: 1;
+        }
+
+        .script-name {
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        .script-id {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            font-family: monospace;
+        }
+
         .raw-link {
             font-size: 0.7rem;
             background: #1e293b;
@@ -103,7 +149,21 @@
             display: inline-block;
             margin-top: 5px;
         }
-        .delete-btn { background: #dc2626; padding: 0.3rem 0.8rem; border-radius: 1.5rem; font-size: 0.7rem; }
+
+        .delete-btn {
+            background: #dc2626;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1.5rem;
+            font-size: 0.7rem;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+        }
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -116,6 +176,7 @@
             z-index: 1000;
             backdrop-filter: blur(8px);
         }
+
         .login-overlay {
             position: fixed;
             top: 0;
@@ -129,6 +190,7 @@
             z-index: 2000;
             backdrop-filter: blur(10px);
         }
+
         .login-box {
             background: #0f172a;
             padding: 2rem;
@@ -137,31 +199,41 @@
             width: 350px;
             text-align: center;
         }
+
         .login-box input {
             margin: 1rem 0;
         }
-        @media (max-width: 800px) { .grid-2col { grid-template-columns: 1fr; } }
+
+        @media (max-width: 800px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+
+<!-- Login Overlay -->
 <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
         <h2 style="margin-bottom: 1rem;">🔐 Admin Access</h2>
+        <p style="margin-bottom: 1rem; font-size: 0.8rem; color: #94a3b8;">Enter password to access admin panel</p>
         <input type="password" id="adminPassword" placeholder="Enter admin password" style="margin-bottom: 1rem;">
         <button id="loginBtn">Login</button>
         <p style="margin-top: 1rem; font-size: 0.7rem; color: #6b7280;">Only authorized personnel</p>
     </div>
 </div>
 
+<!-- Main Content -->
 <div id="mainContent" style="display: none;">
 <div class="container">
     <div class="header">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
             <div>
                 <h1>🔐 Private Script Vault</h1>
-                <div style="margin-top: 8px; display: flex; gap: 12px;">
+                <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
                     <span class="badge">🔒 Admin Only</span>
-                    <span class="badge">🐘 PostgreSQL (Wispbyte)</span>
+                    <span class="badge">📁 JSON Storage</span>
                     <span class="badge">⚡ Roblox Executor Ready</span>
                 </div>
             </div>
@@ -170,6 +242,7 @@
     </div>
 
     <div class="grid-2col">
+        <!-- Upload Section -->
         <div class="card">
             <h2>📤 Upload New Script</h2>
             <div style="margin-bottom: 1rem;">
@@ -184,6 +257,7 @@
             <div id="uploadResult" style="margin-top: 1rem; font-size:0.8rem; background:#0f172a; padding:0.7rem; border-radius:1rem; word-break:break-all;"></div>
         </div>
 
+        <!-- Scripts List Section -->
         <div class="card">
             <h2>📜 Your Scripts (Auto Raw Mode)</h2>
             <div class="script-list" id="scriptListContainer">
@@ -206,9 +280,10 @@
 </div>
 
 <script>
-    // Admin password protection
-    const ADMIN_PASSWORD = "jielkarah"; // CHANGE THIS TO SOMETHING STRONG!
+    // CHANGE THIS PASSWORD TO SOMETHING SECURE!
+    const ADMIN_PASSWORD = "MySecretAdmin123";
     
+    // Login functionality
     document.getElementById("loginBtn").addEventListener("click", function() {
         const enteredPass = document.getElementById("adminPassword").value;
         if (enteredPass === ADMIN_PASSWORD) {
@@ -222,11 +297,11 @@
     
     // Allow Enter key on password field
     document.getElementById("adminPassword").addEventListener("keypress", function(e) {
-        if (e.key === "Enter") document.getElementById("loginBtn").click();
+        if (e.key === "Enter") {
+            document.getElementById("loginBtn").click();
+        }
     });
 
-    const API_BASE = '';
-    
     async function fetchScripts() {
         try {
             const res = await fetch('/api/scripts');
@@ -234,7 +309,7 @@
             const scripts = await res.json();
             renderScriptList(scripts);
         } catch (err) {
-            document.getElementById("scriptListContainer").innerHTML = `<div style="color:#ef4444;">⚠️ Cannot connect to API server.</div>`;
+            document.getElementById("scriptListContainer").innerHTML = `<div style="color:#ef4444;">⚠️ Cannot connect to API server. Make sure the backend is running.</div>`;
         }
     }
 
@@ -259,6 +334,8 @@
             `;
             container.appendChild(div);
         });
+        
+        // Attach copy raw links
         document.querySelectorAll('.raw-link').forEach(el => {
             el.addEventListener('click', (e) => {
                 const url = el.getAttribute('data-url');
@@ -266,17 +343,23 @@
                 showToast(`✅ Copied! Use: loadstring(game:HttpGet("${url}"))()`);
             });
         });
+        
+        // Attach delete buttons
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const id = btn.getAttribute('data-id');
                 if(confirm(`Delete script ID ${id} permanently?`)) {
-                    await fetch('/api/delete', {
-                        method: "DELETE",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({ id: parseInt(id) })
-                    });
-                    showToast("🗑️ Script deleted");
-                    fetchScripts();
+                    try {
+                        await fetch('/api/delete', {
+                            method: "DELETE",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({ id: parseInt(id) })
+                        });
+                        showToast("🗑️ Script deleted");
+                        fetchScripts();
+                    } catch (err) {
+                        showToast("Delete failed", true);
+                    }
                 }
             });
         });
@@ -295,13 +378,16 @@
     async function uploadScript() {
         const title = document.getElementById("scriptTitle").value.trim();
         const content = document.getElementById("scriptContent").value;
+        
         if(!title || !content) {
             showToast("❌ Title and script content required", true);
             return;
         }
+        
         const uploadBtn = document.getElementById("uploadScriptBtn");
         uploadBtn.disabled = true;
         uploadBtn.innerText = "Uploading...";
+        
         try {
             const res = await fetch('/api/upload', {
                 method: "POST",
@@ -309,9 +395,10 @@
                 body: JSON.stringify({ title, content })
             });
             const data = await res.json();
+            
             if(res.ok) {
                 const rawLink = `${window.location.origin}/api/raw?id=${data.id}`;
-                document.getElementById("uploadResult").innerHTML = `✅ Uploaded! ID: ${data.id}<br>🔗 RAW Executor Link: <strong style="background:#000; padding:2px 6px; border-radius:8px;">${rawLink}</strong><br>📋 Copy this for your Roblox executor: loadstring(game:HttpGet("${rawLink}"))()`;
+                document.getElementById("uploadResult").innerHTML = `✅ Uploaded! ID: ${data.id}<br>🔗 RAW Executor Link: <strong style="background:#000; padding:2px 6px; border-radius:8px; word-break:break-all;">${rawLink}</strong><br>📋 Copy this for your Roblox executor: loadstring(game:HttpGet("${rawLink}"))()`;
                 showToast("Script uploaded successfully!");
                 document.getElementById("scriptTitle").value = "";
                 document.getElementById("scriptContent").value = "";
@@ -320,7 +407,7 @@
                 showToast(`Upload error: ${data.error || "unknown"}`, true);
             }
         } catch(err) {
-            showToast("Network error: Is API running?", true);
+            showToast("Network error: Is server running?", true);
         } finally {
             uploadBtn.disabled = false;
             uploadBtn.innerText = "✨ Upload & Generate Links";
