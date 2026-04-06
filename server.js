@@ -95,7 +95,7 @@ app.get('/api/script', (req, res) => {
     <!DOCTYPE html>
     <html>
     <head><style>body{background:black;display:flex;align-items:center;justify-content:center;height:100vh;color:red;font-family:monospace;}</style></head>
-    <body><div><h1>⛔ ACCESS PROHIBITED</h1><p>Use /api/raw?id=${id} for Roblox executor.</p></div></body>
+    <body><div><h1>⛔ ACCESS PROHIBITED jew</h1><p>Use /api/raw?id=${id} for Roblox executor.</p></div></body>
     </html>
   `);
 });
