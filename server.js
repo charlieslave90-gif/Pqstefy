@@ -33,9 +33,23 @@ app.get('/api/scripts', (req, res) => {
   const scripts = data.scripts.map(s => ({
     id: s.id,
     title: s.title,
+    content: s.content,
     created_at: s.created_at
   }));
   res.json(scripts);
+});
+
+// Get single script by ID
+app.get('/api/script/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const data = readData();
+  const script = data.scripts.find(s => s.id === id);
+  
+  if (!script) {
+    return res.status(404).json({ error: 'Script not found' });
+  }
+  
+  res.json(script);
 });
 
 // Upload script
@@ -60,48 +74,68 @@ app.post('/api/upload', (req, res) => {
   res.json({ success: true, id: newScript.id });
 });
 
+// Update script (EDIT)
+app.put('/api/update/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { title, content } = req.body;
+  
+  if (!title || !content) {
+    return res.status(400).json({ error: 'Missing title or content' });
+  }
+  
+  const data = readData();
+  const scriptIndex = data.scripts.findIndex(s => s.id === id);
+  
+  if (scriptIndex === -1) {
+    return res.status(404).json({ error: 'Script not found' });
+  }
+  
+  data.scripts[scriptIndex].title = title;
+  data.scripts[scriptIndex].content = content;
+  writeData(data);
+  
+  res.json({ success: true, message: 'Script updated!' });
+});
+
 // Delete script
-app.delete('/api/delete', (req, res) => {
-  const { id } = req.body;
+app.delete('/api/delete/:id', (req, res) => {
+  const id = parseInt(req.params.id);
   const data = readData();
   data.scripts = data.scripts.filter(s => s.id !== id);
   writeData(data);
   res.json({ success: true });
 });
 
-// RAW script for Roblox executors (THIS ONE WORKS - returns pure Lua)
+// RAW script for Roblox executors (UNBLOCKED - works!)
 app.get('/api/raw', (req, res) => {
   const { id } = req.query;
   const data = readData();
   const script = data.scripts.find(s => s.id == id);
   
   if (!script) {
-    return res.status(404).send('Script not found');
+    return res.status(404).send('-- Script not found');
   }
   
-  // Return pure Lua text for Roblox executor
+  // Return pure Lua - NO HTML, NO black screen
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.send(script.content);
 });
 
-// BLOCKED endpoint - shows black screen (THIS ONE IS BLOCKED)
+// BLOCKED endpoint - BLACK SCREEN for browsers
 app.get('/api/script', (req, res) => {
   const { id } = req.query;
   const data = readData();
   const script = data.scripts.find(s => s.id == id);
   
-  if (!script) {
-    return res.status(404).send('Script not found');
-  }
-  
-  // BLACK SCREEN - blocks browser access
+  // Always show black screen, even if script doesn't exist
   res.setHeader('Content-Type', 'text/html');
   res.status(403).send(`
     <!DOCTYPE html>
     <html>
     <head>
       <meta charset="UTF-8">
+      <title>Access Denied</title>
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -136,10 +170,10 @@ app.get('/api/script', (req, res) => {
     </head>
     <body>
       <div class="block-screen">
-        <h1>⛔ ACCESS PROHIBITED Jew</h1>
+        <h1>⛔ ACCESS PROHIBITED</h1>
         <p>This endpoint is blocked for browser access.</p>
-        <p>Use <span class="id">/api/raw?id=${id}</span> for Roblox executor.</p>
-        <small>Request blocked • Script Vault Security System</small>
+        <p>Use <span class="id">/api/raw?id=${id || 'X'}</span> for Roblox executor.</p>
+        <small>Request blocked • Script Vault Security</small>
       </div>
     </body>
     </html>
@@ -151,14 +185,13 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
-// Home page redirects to admin
 app.get('/', (req, res) => {
   res.redirect('/admin');
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Admin panel: http://localhost:${PORT}/admin`);
-  console.log(`Raw script example: http://localhost:${PORT}/api/raw?id=1`);
-  console.log(`Blocked endpoint: http://localhost:${PORT}/api/script?id=1`);
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📁 Admin panel: http://localhost:${PORT}/admin`);
+  console.log(`📜 Raw script: http://localhost:${PORT}/api/raw?id=1`);
+  console.log(`🚫 Blocked: http://localhost:${PORT}/api/script?id=1`);
 });
